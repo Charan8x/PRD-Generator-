@@ -37,8 +37,5 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
-<<<<<<< HEAD
 *.swp
-=======
-*.swp
->>>>>>> 8c78c2a69d8d949723ba03f27b83c6995b4cbe3f
+
