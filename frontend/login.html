@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Sign Up - AI Product Planner</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-header">
+      <a href="#" class="app-logo">
+        <div class="app-logo-icon">
+          <!-- Logo Icon SVG (styled node graphic) -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <span>Antigravity Plan</span>
+      </a>
+      <div class="app-subtitle">AI-Powered Product Requirements & Roadmap Planner</div>
+    </div>
+
+    <div class="auth-card">
+      <!-- Hidden Radio Tabs for CSS-Only Navigation -->
+      <input type="radio" id="tab-login-radio" name="auth-tabs" checked class="tab-inputs">
+      <input type="radio" id="tab-signup-radio" name="auth-tabs" class="tab-inputs">
+      
+      <!-- Tab Headers -->
+      <div class="tab-buttons">
+        <label for="tab-login-radio" class="tab-label">Login</label>
+        <label for="tab-signup-radio" class="tab-label">Sign Up</label>
+      </div>
+
+      <!-- Login Form Pane -->
+      <div id="login-form-wrapper" class="tab-content-wrapper">
+        <form id="login-form" onsubmit="return false;">
+          <div class="form-group">
+            <label for="login-email" class="form-label">Email Address</label>
+            <input type="email" id="login-email" class="form-input" placeholder="developer@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password" class="form-label">Password</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-accent">Login</button>
+          
+          <div class="form-switch-link">
+            Don't have an account? <label for="tab-signup-radio">Sign Up</label>
+          </div>
+        </form>
+      </div>
+
+      <!-- Sign Up Form Pane -->
+      <div id="signup-form-wrapper" class="tab-content-wrapper">
+        <form id="signup-form" onsubmit="return false;">
+          <div class="form-group">
+            <label for="signup-email" class="form-label">Email Address</label>
+            <input type="email" id="signup-email" class="form-input" placeholder="developer@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password" class="form-label">Password</label>
+            <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-confirm-password" class="form-label">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" class="form-input" placeholder="••••••••" required>
+          </div>
+          <button type="submit" class="btn btn-accent">Sign Up</button>
+          
+          <div class="form-switch-link">
+            Already have an account? <label for="tab-login-radio">Login</label>
+          </div>
+        </form>
+      </div>
+
+      <!-- Inline Error Alert Placeholder (hidden by default via the 'hidden' helper class) -->
+      <div id="error-message" class="alert-container hidden">
+        <div class="alert alert-danger">
+          <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span>Invalid credentials. Please verify your entries and try again.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="JS/login.js" defer></script>
+</body>
+</html>
