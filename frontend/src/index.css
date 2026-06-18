@@ -1,0 +1,375 @@
+@import "../styles.css";
+
+/* ==========================================================================
+   REACT APP SPECIFIC STYLING MAPPINGS
+   Imports all CSS variables and base rules from styles.css and maps them
+   to the class names used in the React components.
+   ========================================================================== */
+
+/* --- AUTH / LOGIN PAGE --- */
+.auth-page-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: var(--bg-primary);
+}
+
+.auth-title {
+    font-family: 'Outfit', var(--font-family);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    outline: none;
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.toggle-mode-button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    margin-top: 16px;
+    outline: none;
+}
+
+.toggle-mode-button:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+.auth-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- DASHBOARD / MAIN WORKSPACE --- */
+.main-page-container {
+    display: flex;
+    height: 100vh;
+    background-color: var(--bg-primary);
+    overflow: hidden;
+}
+
+/* Sidebar Mappings */
+.sidebar-loading,
+.sidebar-empty {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 0 8px;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.project-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.project-item-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--border-radius-md);
+    background: none;
+    border: 1px solid transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-family);
+    color: inherit;
+    outline: none;
+}
+
+.project-item-button:hover {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+.project-item.active .project-item-button {
+    background-color: var(--bg-card);
+    border-color: var(--accent-color);
+}
+
+.project-item-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    display: block;
+}
+
+.project-item-date {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.logout-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border-radius: var(--border-radius-md);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.logout-button:hover {
+    background-color: var(--bg-card);
+    border-color: var(--border-focus);
+}
+
+/* Header */
+.main-title {
+    font-family: 'Outfit', var(--font-family);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.main-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Project Form Card Mappings */
+.project-form-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: 'Outfit', var(--font-family);
+}
+
+.project-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-textarea {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    color: var(--text-primary);
+    padding: 12px;
+    font-size: 14px;
+    outline: none;
+    font-family: var(--font-family);
+    transition: all 0.2s ease;
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.15);
+}
+
+.validation-error-message {
+    color: var(--danger-color);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: -8px;
+}
+
+.form-hint-message {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: -8px;
+}
+
+.generate-button {
+    width: auto !important;
+    align-self: flex-start;
+}
+
+/* Results Section Mappings */
+.results-display {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.results-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'Outfit', var(--font-family);
+}
+
+.sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Section Card (PRD Card) Mappings */
+.section-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.section-card:hover {
+    border-color: var(--border-focus);
+    box-shadow: var(--shadow-md);
+}
+
+.section-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Outfit', var(--font-family);
+    letter-spacing: -0.2px;
+}
+
+.section-card-content {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.section-card-text {
+    white-space: pre-wrap;
+    font-family: var(--font-family);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Empty State / Loading Mappings */
+.placeholder-container {
+    background-color: var(--bg-secondary);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.placeholder-text {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    color: var(--text-secondary);
+    font-size: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+.loading-text {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.success-message-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--border-radius-md);
+    font-size: 13px;
+    line-height: 1.5;
+    background-color: var(--success-bg);
+    border: 1px solid var(--success-border);
+    color: var(--success-color);
+    margin-bottom: 20px;
+}
+
+.success-message-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.success-message-text {
+    margin: 0;
+}
