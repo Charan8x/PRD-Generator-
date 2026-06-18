@@ -147,17 +147,42 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // 5. Handle Project form Submit (Create Project -> Trigger Generation)
+  const descErrorMsg = document.getElementById('desc-error-msg');
+
+  if (projectDescInput) {
+    projectDescInput.addEventListener('input', () => {
+      if (projectDescInput.value.trim()) {
+        projectDescInput.classList.remove('input-error');
+        if (descErrorMsg) descErrorMsg.classList.add('hidden');
+      }
+    });
+  }
+
   if (projectForm) {
     projectForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       validationMessageEl.classList.add('hidden');
       errorMessageEl.classList.add('hidden');
+      if (descErrorMsg) descErrorMsg.classList.add('hidden');
+      if (projectDescInput) projectDescInput.classList.remove('input-error');
 
       const name = projectNameInput.value.trim();
       const description = projectDescInput.value.trim();
 
-      if (!name || !description) {
+      let hasError = false;
+
+      if (!description) {
+        if (projectDescInput) projectDescInput.classList.add('input-error');
+        if (descErrorMsg) descErrorMsg.classList.remove('hidden');
+        hasError = true;
+      }
+
+      if (!name) {
         validationMessageEl.classList.remove('hidden');
+        hasError = true;
+      }
+
+      if (hasError) {
         return;
       }
 
