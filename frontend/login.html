@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login & Sign Up - AI Product Planner</title>
+  <!-- Prevent theme flashing (FOUC) before CSS renders -->
+  <script>
+    (function() {
+      var storedTheme = localStorage.getItem('theme-preference');
+      var theme = storedTheme;
+      if (!theme) {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <!-- Mount manual theme toggle button and OS listeners -->
+  <script src="/theme-toggle.js" defer></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
