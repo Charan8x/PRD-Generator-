@@ -19,9 +19,10 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [validationError, setValidationError] = useState('');
+  const [descError, setDescError] = useState(false);
 
   // Validate fields in real time or on submit
-  const isFormInvalid = !projectName.trim() || !projectDescription.trim();
+  const isFormInvalid = !projectName.trim();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,10 +30,16 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
     // Reset previous errors
     setError('');
     setValidationError('');
+    setDescError(false);
 
     // Pre-submit validation
-    if (!projectName.trim() || !projectDescription.trim()) {
-      setValidationError('Both Project Name and Project Description are required.');
+    if (!projectDescription.trim()) {
+      setDescError(true);
+      return;
+    }
+
+    if (!projectName.trim()) {
+      setValidationError('Project Name is required.');
       return;
     }
 
@@ -84,16 +91,24 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
           <label htmlFor="projectDescription" className="form-label">Project Description</label>
           <textarea
             id="projectDescription"
-            className="form-textarea"
+            className={`form-textarea ${descError ? 'input-error' : ''}`}
             placeholder="Describe your app's core features, target users, and goals..."
             value={projectDescription}
             disabled={loading}
             onChange={(e) => {
               setProjectDescription(e.target.value);
-              if (e.target.value.trim()) setValidationError('');
+              if (e.target.value.trim()) {
+                setDescError(false);
+                setValidationError('');
+              }
             }}
             rows={5}
           />
+          {descError && (
+            <p className="validation-error-message" role="alert" style={{ color: 'var(--error)', marginTop: '4px', fontSize: '13px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
+              ❌ Project description is required.
+            </p>
+          )}
         </div>
 
         {/* Display inline validation warning if user interacts and fields are missing */}

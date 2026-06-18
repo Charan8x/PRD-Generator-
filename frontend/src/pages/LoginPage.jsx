@@ -18,6 +18,7 @@ const LoginPage = ({ onAuthSuccess }) => {
   // Validation and API error states
   const [validationErrors, setValidationErrors] = useState({});
   const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Toggle between Login and Signup modes
@@ -26,6 +27,7 @@ const LoginPage = ({ onAuthSuccess }) => {
     // Clear error states when switching mode
     setValidationErrors({});
     setApiError('');
+    setSuccessMessage('');
     setPassword('');
     setConfirmPassword('');
   };
@@ -38,6 +40,7 @@ const LoginPage = ({ onAuthSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError('');
+    setSuccessMessage('');
     setValidationErrors({});
 
     const errors = {};
@@ -75,11 +78,13 @@ const LoginPage = ({ onAuthSuccess }) => {
     try {
       if (isSignup) {
         // Step 1: Sign up the user
-        const signupResponse = await signup(trimmedEmail, password);
+        await signup(trimmedEmail, password);
         
-        // Step 2: Auto-login after successful signup (FastAPI requires logging in to get the JWT token)
-        const loginResponse = await login(trimmedEmail, password);
-        onAuthSuccess(loginResponse.access_token, loginResponse.user);
+        // Step 2: Show success message and transition to login screen
+        setSuccessMessage('Account created! Please check your email inbox to verify your account before logging in.');
+        setIsSignup(false);
+        setPassword('');
+        setConfirmPassword('');
       } else {
         // Log in the user
         const loginResponse = await login(trimmedEmail, password);
@@ -104,6 +109,12 @@ const LoginPage = ({ onAuthSuccess }) => {
         </header>
 
         {apiError && <ErrorMessage message={apiError} />}
+        {successMessage && (
+          <div className="success-message-container" role="status">
+            <span className="success-message-icon">✅</span>
+            <p className="success-message-text">{successMessage}</p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
