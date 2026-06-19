@@ -3,24 +3,25 @@ import SectionCard from './SectionCard';
 
 /**
  * ResultsDisplay Component
- * Responsible for rendering all seven generated sections in the required order.
+ * Responsible for rendering all eight generated sections in the required order.
  * 
  * Props:
- * @param {Object} sections - An object containing the 7 generated sections:
- *                            { summary, features, user_stories, db_design, apis, test_cases, dev_plan }
+ * @param {Object} sections - An object containing the 8 generated sections:
+ *                            { summary, features, user_stories, techstack, db_design, apis, test_cases, dev_plan }
  */
 const ResultsDisplay = ({ sections }) => {
   if (!sections) return null;
 
-  // The seven sections in the requested order with their respective titles
+  // The eight sections in the requested order with their respective titles
   const orderedSections = [
-    { key: 'summary', title: '1. Project Summary' },
-    { key: 'features', title: '2. Features' },
+    { key: 'summary',      title: '1. Project Summary' },
+    { key: 'features',     title: '2. Features' },
     { key: 'user_stories', title: '3. User Stories' },
-    { key: 'db_design', title: '4. Database Design' },
-    { key: 'apis', title: '5. API Suggestions' },
-    { key: 'test_cases', title: '6. Test Cases' },
-    { key: 'dev_plan', title: '7. Development Plan' },
+    { key: 'techstack',    title: '4. Tech Stack' },
+    { key: 'db_design',   title: '5. Database Design' },
+    { key: 'apis',        title: '6. API Suggestions' },
+    { key: 'test_cases',  title: '7. Test Cases' },
+    { key: 'dev_plan',    title: '8. Development Plan' },
   ];
 
   return (

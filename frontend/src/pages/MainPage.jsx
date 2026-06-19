@@ -56,6 +56,7 @@ const MainPage = ({ token, onLogout }) => {
           summary: doc.summary,
           features: doc.features,
           user_stories: doc.user_stories,
+          techstack: doc.techstack,
           db_design: doc.db_design,
           apis: doc.apis,
           test_cases: doc.test_cases,
