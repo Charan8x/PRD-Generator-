@@ -44,6 +44,25 @@ def create_project(
     return project
 
 
+@router.put("/{project_id}", response_model=ProjectOut)
+def update_project(
+    project_id: int,
+    data: ProjectCreate,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_user_from_token),
+):
+    """
+    Update an existing project linked to the logged in user.
+    """
+    project = project_service.get_project(db, project_id, user_id=current_user["id"])
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Project with id {project_id} not found.",
+        )
+    return project_service.update_project(db, project, data)
+
+
 @router.post("/{project_id}/generate", response_model=GenerateResponse, status_code=status.HTTP_200_OK)
 def generate_prd(
     project_id: int,

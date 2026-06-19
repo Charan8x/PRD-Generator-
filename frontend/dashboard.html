@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - AI Product Planner</title>
+  <!-- Prevent theme flashing (FOUC) before CSS renders -->
+  <script>
+    (function() {
+      var storedTheme = localStorage.getItem('theme-preference');
+      var theme = storedTheme;
+      if (!theme) {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  <!-- Mount manual theme toggle button and OS listeners -->
+  <script src="/theme-toggle.js" defer></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -76,7 +89,7 @@
     <main class="main-content">
       <!-- Input Section at the Top -->
       <section class="content-card">
-        <form id="project-form" class="dashboard-form" onsubmit="return false;">
+        <form id="project-form" class="dashboard-form" onsubmit="return false;" novalidate>
           <div class="dashboard-form-row">
             <div class="dashboard-input-group">
               <label for="project-name" class="dashboard-label">Project Name</label>
@@ -87,6 +100,9 @@
             <div class="dashboard-input-group">
               <label for="project-description" class="dashboard-label">Project Description</label>
               <textarea id="project-description" class="dashboard-input" placeholder="Describe the product scope, core requirements, target user personas, and what problem you are solving..." required></textarea>
+              <div id="desc-error-msg" class="validation-error-message hidden" style="color: var(--error); font-size: 13px; font-weight: 500; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+                <span>❌ Project description is required.</span>
+              </div>
             </div>
           </div>
           

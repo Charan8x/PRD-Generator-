@@ -154,3 +154,22 @@ export async function generateProject(token, id) {
   });
   return handleResponse(response);
 }
+
+/**
+ * Updates an existing project's name and description.
+ * Returns: ProjectOut
+ */
+export async function updateProject(token, id, projectName, description) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      project_name: projectName,
+      description: description,
+    }),
+  });
+  return handleResponse(response);
+}

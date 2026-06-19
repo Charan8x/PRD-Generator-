@@ -2,47 +2,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Light developer-focused black-and-white color palette */
-  --bg-primary: #ffffff;       /* Pure white background */
-  --bg-secondary: #f4f4f5;     /* Sidebar / distinct light grey (zinc-100) */
-  --bg-card: #ffffff;          /* White card body */
-  --bg-input: #ffffff;         /* White input background */
-  
-  --border-color: #e4e4e7;     /* Zinc-200 borders */
-  --border-focus: #09090b;     /* Zinc-950 focus border */
   --border-radius-lg: 12px;    /* Large radius for cards */
   --border-radius-md: 8px;     /* Medium radius for buttons/inputs */
-  --border-radius-sm: 4px;     /* Small radius for badges/inline items */
+  --border-radius-sm: 6px;     /* Small radius for badges/inline items */
+  --sidebar-width: 280px;
   
-  --text-primary: #09090b;     /* High contrast black text (zinc-950) */
-  --text-secondary: #27272a;   /* Secondary zinc-800 text */
-  --text-muted: #71717a;       /* Muted gray text (zinc-500) */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Mappings that dynamically reference the active theme's colors */
+  --bg-primary: var(--bg-main);
+  --bg-secondary: var(--bg-sidebar);
+  --bg-input: var(--bg-main);
   
-  /* Black Accents */
-  --accent-color: #09090b;     /* Black accent */
-  --accent-hover: #27272a;     /* Dark zinc hover */
-  --accent-bg-subtle: #f4f4f5; /* Light grey badge background */
-  --accent-rgb: 9, 9, 11;
+  --border-color: rgba(255, 107, 74, 0.15); /* low-opacity accent-coral hairline border */
+  --border-focus: var(--accent-coral);
+  
+  --text-muted: var(--text-secondary);
+  
+  /* Sunset Tech Accents */
+  --accent-color: var(--accent-coral);
+  --accent-hover: var(--accent-gold);
+  --accent-bg-subtle: rgba(255, 107, 74, 0.08);
+  --accent-rgb: 255, 107, 74;
   
   /* Status Colors */
-  --danger-color: #dc2626;     /* Red-600 */
-  --danger-bg: rgba(220, 38, 38, 0.05);
-  --danger-border: rgba(220, 38, 38, 0.1);
+  --danger-color: var(--error);
   
   --success-color: #059669;    /* Emerald-600 */
   --success-bg: rgba(5, 150, 105, 0.05);
   --success-border: rgba(5, 150, 105, 0.1);
+}
+
+:root[data-theme="dark"] {
+  /* Sunset Tech Dark colors */
+  --bg-main: #0D1117;        /* main page background, deep blue-black */
+  --bg-sidebar: #161B22;     /* sidebar background, slightly lighter blue-grey */
+  --bg-card: #1F2530;        /* cards, form containers, generated output sections */
+  --accent-coral: #FF6B4A;   /* primary accent — headings, borders, active states */
+  --accent-gold: #FFC857;    /* secondary accent — alternating highlights, hover states */
+  --text-primary: #F0F2F5;   /* main body text, off-white */
+  --text-secondary: #8B949E; /* muted slate labels */
+  --error: #E5484D;          /* error messages, invalid states */
+
+  /* Shadows - softened for dark background */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
   
-  /* Shadows - softened for light background */
+  --shadow-glow: rgba(255, 107, 74, 0.35);
+  --shadow-glow-hover: rgba(255, 107, 74, 0.5);
+  --input-glow: rgba(255, 107, 74, 0.2);
+
+  --danger-bg: rgba(229, 72, 77, 0.05);
+  --danger-border: rgba(229, 72, 77, 0.15);
+}
+
+:root[data-theme="light"] {
+  /* Sunset Tech Light colors */
+  --bg-main: #F6F8FA;        /* main page background, very soft off-white/light blue-grey */
+  --bg-sidebar: #FFFFFF;     /* sidebar background, pure white */
+  --bg-card: #FFFFFF;        /* cards, form containers, generated output sections */
+  --accent-coral: #E55B3C;   /* primary accent - slightly darker coral for light bg contrast */
+  --accent-gold: #D97706;    /* secondary accent - darker gold/amber for readability */
+  --text-primary: #1A1D20;   /* main body text, dark charcoal */
+  --text-secondary: #57606A; /* muted slate grey labels */
+  --error: #CF222E;          /* light-red error */
+
+  /* Shadows - standard light background shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  
-  /* Fonts */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  
-  --sidebar-width: 280px;
+
+  --shadow-glow: rgba(229, 91, 60, 0.25);
+  --shadow-glow-hover: rgba(229, 91, 60, 0.4);
+  --input-glow: rgba(229, 91, 60, 0.15);
+
+  --danger-bg: rgba(207, 34, 46, 0.05);
+  --danger-border: rgba(207, 34, 46, 0.15);
 }
 
 /* Global resets & scrollbars */
@@ -60,6 +97,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   overflow-x: hidden;
+}
+
+/* Smooth transitions for theme-affected elements */
+body, .auth-container, .auth-page-container, .dashboard-container, .main-page-container, .sidebar, .content-card, .prd-card, .project-form-container, .section-card, .form-input, .dashboard-input, .form-textarea, button, a, h1, h2, h3, h4, h5, h6, p, span, li, label {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 /* Custom Webkit scrollbar for premium look */
@@ -123,12 +165,12 @@ body {
 .app-logo-icon {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #a855f7 100%);
+  background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 10px rgba(255, 107, 74, 0.2);
 }
 
 .app-subtitle {
@@ -141,12 +183,18 @@ body {
 .auth-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 420px;
   padding: 32px;
   position: relative;
+  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-card:hover {
+  border-left-color: var(--accent-gold);
 }
 
 /* CSS-Only Tab System setup */
@@ -202,9 +250,11 @@ body {
 }
 
 .form-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-coral);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .form-input {
@@ -224,8 +274,16 @@ body {
 }
 
 .form-input:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+  border-color: var(--accent-coral);
+  box-shadow: 0 0 0 3px var(--input-glow);
+}
+
+.input-error {
+  border-color: var(--error) !important;
+}
+
+.input-error:focus {
+  box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.2) !important;
 }
 
 /* Form switch helper links */
@@ -294,23 +352,16 @@ body {
   outline: none;
 }
 
-.btn-primary {
-  background-color: var(--text-primary);
-  color: var(--bg-primary);
+.btn-primary, .btn-accent {
+  background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
+  color: #1A1208 !important; /* dark text for contrast */
+  border: 1px solid rgba(26, 20, 8, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-glow);
 }
 
-.btn-primary:hover {
-  background-color: rgba(9, 9, 11, 0.9);
-}
-
-.btn-accent {
-  background-color: var(--accent-color);
-  color: white;
-}
-
-.btn-accent:hover {
-  background-color: var(--accent-hover);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.btn-primary:hover, .btn-accent:hover {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-coral) 100%);
+  box-shadow: 0 4px 20px var(--shadow-glow-hover);
 }
 
 .btn-secondary {
@@ -321,7 +372,7 @@ body {
 
 .btn-secondary:hover {
   background-color: var(--bg-card);
-  border-color: var(--border-focus);
+  border-color: var(--accent-coral);
 }
 
 
@@ -371,8 +422,8 @@ body {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  color: var(--accent-coral);
   padding: 0 8px;
   margin-bottom: 4px;
 }
@@ -439,12 +490,18 @@ body {
 .content-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
+  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+}
+
+.content-card:hover {
+  border-left-color: var(--accent-gold);
 }
 
 /* Form elements in dashboard */
@@ -467,9 +524,11 @@ body {
 }
 
 .dashboard-label {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--accent-coral);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .dashboard-input {
@@ -485,8 +544,8 @@ body {
 }
 
 .dashboard-input:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.15);
+  border-color: var(--accent-coral);
+  box-shadow: 0 0 0 3px var(--input-glow);
 }
 
 textarea.dashboard-input {
@@ -520,8 +579,8 @@ textarea.dashboard-input {
 .loading-spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-top-color: var(--accent-color);
+  border: 2px solid rgba(240, 242, 245, 0.1);
+  border-top-color: var(--accent-coral);
   border-radius: 50%;
   animation: loading-spin 0.8s linear infinite;
 }
@@ -538,23 +597,35 @@ textarea.dashboard-input {
 }
 
 .results-header-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent-coral);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
+  font-family: 'Outfit', var(--font-family);
 }
 
 .prd-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
+  border-left: 3px solid transparent;
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.prd-card:nth-of-type(odd) {
+  border-left-color: var(--accent-coral);
+}
+
+.prd-card:nth-of-type(even) {
+  border-left-color: var(--accent-gold);
 }
 
 .prd-card:hover {
@@ -562,21 +633,34 @@ textarea.dashboard-input {
   box-shadow: var(--shadow-md);
 }
 
+.prd-card:hover:nth-of-type(odd) {
+  border-left-color: var(--accent-coral);
+}
+
+.prd-card:hover:nth-of-type(even) {
+  border-left-color: var(--accent-gold);
+}
+
 .prd-card-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.prd-card-title h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-coral);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   font-family: 'Outfit', var(--font-family);
-  letter-spacing: -0.2px;
+  margin: 0;
 }
 
 .prd-card-title-badge {
   background-color: var(--accent-bg-subtle);
-  border: 1px solid rgba(9, 9, 11, 0.15);
-  color: var(--accent-color);
+  border: 1px solid rgba(255, 107, 74, 0.3);
+  color: var(--accent-coral);
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
@@ -614,9 +698,9 @@ textarea.dashboard-input {
 
 .prd-card-content code {
   font-family: var(--font-family-mono);
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgba(240, 242, 245, 0.06);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 13px;
   color: var(--text-primary);
 }

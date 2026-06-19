@@ -77,6 +77,7 @@ const LoginPage = ({ onAuthSuccess }) => {
 
     try {
       if (isSignup) {
+<<<<<<< HEAD
         // Step 1: Sign up the user (sends confirmation email)
         await signup(trimmedEmail, password);
         
@@ -86,6 +87,16 @@ const LoginPage = ({ onAuthSuccess }) => {
         setPassword('');
         setConfirmPassword('');
         setIsSignup(false);
+=======
+        // Step 1: Sign up the user
+        await signup(trimmedEmail, password);
+        
+        // Step 2: Show success message and transition to login screen
+        setSuccessMessage('Account created! Please check your email inbox to verify your account before logging in.');
+        setIsSignup(false);
+        setPassword('');
+        setConfirmPassword('');
+>>>>>>> cfa0fc6cfec5beef8fa7247382f176130378de1f
       } else {
         // Log in the user
         const loginResponse = await login(trimmedEmail, password);
@@ -111,9 +122,15 @@ const LoginPage = ({ onAuthSuccess }) => {
 
         {apiError && <ErrorMessage message={apiError} />}
         {successMessage && (
+<<<<<<< HEAD
           <div className="alert alert-success" style={{ marginBottom: '20px' }} role="alert">
             <span style={{ marginRight: '8px' }}>✅</span>
             <span>{successMessage}</span>
+=======
+          <div className="success-message-container" role="status">
+            <span className="success-message-icon">✅</span>
+            <p className="success-message-text">{successMessage}</p>
+>>>>>>> cfa0fc6cfec5beef8fa7247382f176130378de1f
           </div>
         )}
 
