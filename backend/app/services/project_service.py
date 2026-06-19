@@ -38,20 +38,39 @@ def get_all_projects(db: Session, user_id: str) -> list[Project]:
     )
 
 
+def update_project(db: Session, project: Project, data: ProjectCreate) -> Project:
+    """Update name and description of an existing project."""
+    project.project_name = data.project_name.strip()
+    project.description = data.description.strip()
+    db.commit()
+    db.refresh(project)
+    return project
+
+
 def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> None:
     """
     Save all 7 sections as a single GeneratedDocument row.
-    Each section is stored in its own column.
+    Each section is stored in its own column. Overwrites if it exists.
     """
-    document = GeneratedDocument(
-        project_id=project_id,
-        summary=sections["summary"],
-        features=sections["features"],
-        user_stories=sections["user_stories"],
-        db_design=sections["db_design"],
-        apis=sections["apis"],
-        test_cases=sections["test_cases"],
-        dev_plan=sections["dev_plan"],
-    )
-    db.add(document)
+    document = db.query(GeneratedDocument).filter(GeneratedDocument.project_id == project_id).first()
+    if document:
+        document.summary = sections["summary"]
+        document.features = sections["features"]
+        document.user_stories = sections["user_stories"]
+        document.db_design = sections["db_design"]
+        document.apis = sections["apis"]
+        document.test_cases = sections["test_cases"]
+        document.dev_plan = sections["dev_plan"]
+    else:
+        document = GeneratedDocument(
+            project_id=project_id,
+            summary=sections["summary"],
+            features=sections["features"],
+            user_stories=sections["user_stories"],
+            db_design=sections["db_design"],
+            apis=sections["apis"],
+            test_cases=sections["test_cases"],
+            dev_plan=sections["dev_plan"],
+        )
+        db.add(document)
     db.commit()

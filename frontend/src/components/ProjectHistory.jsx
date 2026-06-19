@@ -13,7 +13,7 @@ import ErrorMessage from './ErrorMessage';
  * @param {function} onSelectProject - Callback when a project is clicked.
  * @param {function} onLogout - Callback when the user logs out.
  */
-const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProject, onLogout }) => {
+const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProject, onNewPrd, onLogout }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -80,8 +80,16 @@ const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProj
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-header">
-        <h2 className="sidebar-title">PRD History</h2>
+      <div className="sidebar-header" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <h2 className="sidebar-title" style={{ padding: '0' }}>PRD History</h2>
+        <button
+          type="button"
+          className="btn-primary"
+          style={{ width: '100%', padding: '8px 12px', fontSize: '13px' }}
+          onClick={onNewPrd}
+        >
+          + New PRD
+        </button>
       </div>
 
       {error && <ErrorMessage message={error} />}
