@@ -53,7 +53,7 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
       const generateResponse = await generateProject(token, createdProject.id);
 
       // On success, notify parent component and clear fields
-      onGenerationSuccess(createdProject.id, generateResponse.sections);
+      onGenerationSuccess(createdProject.id, projectName, projectDescription, generateResponse.sections);
       setProjectName('');
       setProjectDescription('');
     } catch (err) {
