@@ -1,6 +1,26 @@
 /* Import modern developer-tool fonts from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
 
+@font-face {
+  font-family: 'Tiempo';
+  src: url('./src/assets/fonts/Tiempo-Regular.woff2') format('woff2'),
+       url('./src/assets/fonts/Tiempo-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Custom Tiempo font family for user-typed content in Project Name/Description */
+input[name="project_name"],
+textarea[name="project_description"] {
+  font-family: 'Tiempo', serif;
+}
+
+input[name="project_name"]::placeholder,
+textarea[name="project_description"]::placeholder {
+  font-family: var(--font-family);
+}
+
 :root {
   --border-radius-lg: 12px;    /* Large radius for cards */
   --border-radius-md: 8px;     /* Medium radius for buttons/inputs */

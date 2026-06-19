@@ -154,6 +154,18 @@ const MainPage = ({ token, onLogout }) => {
     }
   };
 
+  const handleProjectRenamed = (projectId, newName) => {
+    if (selectedProjectId === projectId) {
+      setCurrentProjectName(newName);
+    }
+  };
+
+  const handleProjectDeleted = (projectId) => {
+    if (selectedProjectId === projectId) {
+      handleNewPrd();
+    }
+  };
+
   return (
     <div className="main-page-container">
       {/* Sidebar Section */}
@@ -164,6 +176,8 @@ const MainPage = ({ token, onLogout }) => {
         onSelectProject={handleSelectProject}
         onNewPrd={handleNewPrd}
         onLogout={onLogout}
+        onProjectRenamed={handleProjectRenamed}
+        onProjectDeleted={handleProjectDeleted}
       />
 
       {/* Main Content Area */}
@@ -196,6 +210,7 @@ const MainPage = ({ token, onLogout }) => {
                       <label htmlFor="editProjectName" className="form-label">Project Name</label>
                       <input
                         id="editProjectName"
+                        name="project_name"
                         type="text"
                         className="form-input"
                         placeholder="e.g. Movie Streaming App"
@@ -212,6 +227,7 @@ const MainPage = ({ token, onLogout }) => {
                       <label htmlFor="editProjectDescription" className="form-label">Project Description</label>
                       <textarea
                         id="editProjectDescription"
+                        name="project_description"
                         className={`form-textarea ${editValError ? 'input-error' : ''}`}
                         placeholder="Describe your app's core features, target users, and goals..."
                         value={editDesc}
@@ -242,7 +258,7 @@ const MainPage = ({ token, onLogout }) => {
                       </button>
                       <button
                         type="button"
-                        className="btn-secondary"
+                        className="btn-secondary btn-cancel-edit"
                         style={{ width: 'auto' }}
                         disabled={editLoading}
                         onClick={handleCancelEdit}
@@ -262,7 +278,7 @@ const MainPage = ({ token, onLogout }) => {
                     </div>
                     <button
                       type="button"
-                      className="btn-secondary"
+                      className="btn-secondary btn-edit-details"
                       style={{ width: 'auto', padding: '6px 12px', fontSize: '12px', marginLeft: '16px', flexShrink: 0 }}
                       onClick={handleStartEdit}
                     >

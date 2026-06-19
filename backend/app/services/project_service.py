@@ -74,3 +74,20 @@ def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> No
         )
         db.add(document)
     db.commit()
+
+
+def rename_project(db: Session, project: Project, project_name: str) -> Project:
+    """Rename an existing project."""
+    project.project_name = project_name.strip()
+    db.commit()
+    db.refresh(project)
+    return project
+
+
+
+
+
+def delete_project(db: Session, project: Project) -> None:
+    """Delete a project and its cascade relations."""
+    db.delete(project)
+    db.commit()
