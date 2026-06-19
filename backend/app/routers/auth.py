@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, field_validator, EmailStr
-from app.services.auth_service import signup_user, login_user, get_current_user
+from app.services.auth_service import signup_user, login_user, get_current_user, logout_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 security = HTTPBearer()
@@ -78,5 +78,21 @@ def get_me(credentials: HTTPAuthorizationCredentials = Depends(security)):
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+        )
+
+
+@router.post("/logout", status_code=status.HTTP_200_OK)
+def logout(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Log out the user.
+    Frontend sends: Authorization: Bearer <access_token>
+    """
+    try:
+        logout_user(credentials.credentials)
+        return {"message": "Logged out successfully."}
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
             detail=str(e),
         )

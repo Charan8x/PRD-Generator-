@@ -12,27 +12,28 @@ import SectionCard from './SectionCard';
 const ResultsDisplay = ({ sections }) => {
   if (!sections) return null;
 
-  // The seven sections in the requested order with their respective titles
+  // The seven sections in the requested order with their respective titles and numbers
   const orderedSections = [
-    { key: 'summary', title: '1. Project Summary' },
-    { key: 'features', title: '2. Features' },
-    { key: 'user_stories', title: '3. User Stories' },
-    { key: 'db_design', title: '4. Database Design' },
-    { key: 'apis', title: '5. API Suggestions' },
-    { key: 'test_cases', title: '6. Test Cases' },
-    { key: 'dev_plan', title: '7. Development Plan' },
+    { key: 'summary', title: 'Project Summary', num: '01' },
+    { key: 'features', title: 'Features', num: '02' },
+    { key: 'user_stories', title: 'User Stories', num: '03' },
+    { key: 'db_design', title: 'Database Design', num: '04' },
+    { key: 'apis', title: 'API Suggestions', num: '05' },
+    { key: 'test_cases', title: 'Test Cases', num: '06' },
+    { key: 'dev_plan', title: 'Development Plan', num: '07' },
   ];
 
   return (
-    <section className="results-display">
-      <h2 className="results-title">Generated Product Requirement Document (PRD)</h2>
-      <div className="sections-container">
+    <section className="results-section-wrapper">
+      <h2 className="results-header-title">Generated Product Requirement Document (PRD)</h2>
+      <div className="results-section-wrapper" style={{ marginTop: '16px' }}>
         {orderedSections.map((sec) => {
           const content = sections[sec.key];
           return (
             <SectionCard 
               key={sec.key} 
               title={sec.title} 
+              badgeNumber={sec.num}
               content={content} 
             />
           );
@@ -43,3 +44,4 @@ const ResultsDisplay = ({ sections }) => {
 };
 
 export default ResultsDisplay;
+

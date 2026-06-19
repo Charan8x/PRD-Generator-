@@ -79,3 +79,14 @@ def get_current_user(token: str) -> dict:
 
     except Exception as e:
         raise ValueError(str(e))
+
+
+def logout_user(token: str) -> None:
+    """
+    Log out the user by signing them out in Supabase.
+    """
+    try:
+        supabase.auth.set_session(access_token=token, refresh_token="")
+        supabase.auth.sign_out()
+    except Exception as e:
+        raise ValueError(str(e))

@@ -88,23 +88,27 @@ const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProj
 
       <div className="sidebar-content">
         {loading ? (
-          <p className="sidebar-loading">Loading projects...</p>
+          <p className="sidebar-loading" style={{ padding: '0 8px', fontSize: '13px', color: 'var(--text-muted)' }}>Loading projects...</p>
         ) : projects.length === 0 ? (
-          <p className="sidebar-empty">No projects found. Create one to get started!</p>
+          <p className="sidebar-empty" style={{ padding: '0 8px', fontSize: '13px', color: 'var(--text-muted)' }}>No projects found. Create one to get started!</p>
         ) : (
-          <ul className="project-list">
+          <ul className="project-history-list">
             {projects.map((project) => (
-              <li 
-                key={project.id}
-                className={`project-item ${selectedProjectId === project.id ? 'active' : ''}`}
-              >
+              <li key={project.id} style={{ listStyle: 'none' }}>
                 <button
                   type="button"
-                  className="project-item-button"
+                  className={`project-history-item ${selectedProjectId === project.id ? 'active' : ''}`}
                   onClick={() => onSelectProject(project.id)}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    background: selectedProjectId === project.id ? 'var(--bg-card)' : 'transparent',
+                    borderColor: selectedProjectId === project.id ? 'var(--border-focus)' : 'transparent',
+                    fontFamily: 'inherit',
+                  }}
                 >
-                  <span className="project-item-name">{project.project_name}</span>
-                  <span className="project-item-date">{formatDate(project.created_date)}</span>
+                  <span className="project-name-text">{project.project_name}</span>
+                  <span className="project-date-text">{formatDate(project.created_date)}</span>
                 </button>
               </li>
             ))}
@@ -115,7 +119,7 @@ const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProj
       <div className="sidebar-footer">
         <button
           type="button"
-          className="logout-button"
+          className="btn btn-secondary logout-button"
           onClick={handleLogoutClick}
         >
           Logout

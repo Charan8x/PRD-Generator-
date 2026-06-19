@@ -15,17 +15,19 @@ const LoginPage = ({ onAuthSuccess }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  // Validation and API error states
+  // Validation and API error/success states
   const [validationErrors, setValidationErrors] = useState({});
   const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Toggle between Login and Signup modes
   const handleToggleMode = () => {
     setIsSignup(prev => !prev);
-    // Clear error states when switching mode
+    // Clear error and success states when switching mode
     setValidationErrors({});
     setApiError('');
+    setSuccessMessage('');
     setPassword('');
     setConfirmPassword('');
   };
@@ -38,6 +40,7 @@ const LoginPage = ({ onAuthSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError('');
+    setSuccessMessage('');
     setValidationErrors({});
 
     const errors = {};
@@ -74,12 +77,15 @@ const LoginPage = ({ onAuthSuccess }) => {
 
     try {
       if (isSignup) {
-        // Step 1: Sign up the user
-        const signupResponse = await signup(trimmedEmail, password);
+        // Step 1: Sign up the user (sends confirmation email)
+        await signup(trimmedEmail, password);
         
-        // Step 2: Auto-login after successful signup (FastAPI requires logging in to get the JWT token)
-        const loginResponse = await login(trimmedEmail, password);
-        onAuthSuccess(loginResponse.access_token, loginResponse.user);
+        // Show success confirmation and switch to login mode
+        setSuccessMessage('Account created successfully! Please check your email to verify your account before logging in.');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setIsSignup(false);
       } else {
         // Log in the user
         const loginResponse = await login(trimmedEmail, password);
@@ -104,6 +110,12 @@ const LoginPage = ({ onAuthSuccess }) => {
         </header>
 
         {apiError && <ErrorMessage message={apiError} />}
+        {successMessage && (
+          <div className="alert alert-success" style={{ marginBottom: '20px' }} role="alert">
+            <span style={{ marginRight: '8px' }}>✅</span>
+            <span>{successMessage}</span>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
