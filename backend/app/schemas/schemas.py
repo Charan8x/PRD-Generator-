@@ -34,7 +34,7 @@ class DocumentOut(BaseModel):
     summary: str
     features: str
     user_stories: str
-    techstack: str
+    techstack: Optional[str] = None
     db_design: str
     apis: str
     test_cases: str

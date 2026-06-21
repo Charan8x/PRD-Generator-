@@ -57,7 +57,6 @@ def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> No
         document.summary = sections["summary"]
         document.features = sections["features"]
         document.user_stories = sections["user_stories"]
-        document.techstack = sections["techstack"]
         document.db_design = sections["db_design"]
         document.apis = sections["apis"]
         document.test_cases = sections["test_cases"]
@@ -68,7 +67,6 @@ def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> No
             summary=sections["summary"],
             features=sections["features"],
             user_stories=sections["user_stories"],
-            techstack=sections["techstack"],
             db_design=sections["db_design"],
             apis=sections["apis"],
             test_cases=sections["test_cases"],

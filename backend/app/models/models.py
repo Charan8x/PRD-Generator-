@@ -35,7 +35,6 @@ class GeneratedDocument(Base):
     summary = Column(Text, nullable=False)
     features = Column(Text, nullable=False)
     user_stories = Column(Text, nullable=False)
-    techstack = Column(Text, nullable=False)
     db_design = Column(Text, nullable=False)
     apis = Column(Text, nullable=False)
     test_cases = Column(Text, nullable=False)

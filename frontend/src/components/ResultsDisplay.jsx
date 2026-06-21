@@ -1,46 +1,156 @@
-import React from 'react';
-import SectionCard from './SectionCard';
+import { useState } from 'react'
+import LoadingSpinner from './LoadingSpinner'
 
-/**
- * ResultsDisplay Component
- * Responsible for rendering all eight generated sections in the required order.
- * 
- * Props:
- * @param {Object} sections - An object containing the 8 generated sections:
- *                            { summary, features, user_stories, techstack, db_design, apis, test_cases, dev_plan }
- */
-const ResultsDisplay = ({ sections }) => {
-  if (!sections) return null;
+const SECTIONS = [
+  { key: 'summary', label: '1. Project Summary' },
+  { key: 'features', label: '2. Features' },
+  { key: 'user_stories', label: '3. User Stories' },
+  { key: 'db_design', label: '4. Database Design' },
+  { key: 'apis', label: '5. API Suggestions' },
+  { key: 'test_cases', label: '6. Test Cases' },
+  { key: 'dev_plan', label: '7. Development Plan' },
+]
 
-  // The eight sections in the requested order with their respective titles
-  const orderedSections = [
-    { key: 'summary',      title: '1. Project Summary' },
-    { key: 'features',     title: '2. Features' },
-    { key: 'user_stories', title: '3. User Stories' },
-    { key: 'techstack',    title: '4. Tech Stack' },
-    { key: 'db_design',   title: '5. Database Design' },
-    { key: 'apis',        title: '6. API Suggestions' },
-    { key: 'test_cases',  title: '7. Test Cases' },
-    { key: 'dev_plan',    title: '8. Development Plan' },
-  ];
+const ResultsDisplay = ({ project }) => {
+  const [downloading, setDownloading] = useState(false)
+
+  if (!project?.document) return null
+
+  const doc = project.document
+
+  const handleDownload = async () => {
+    setDownloading(true)
+    try {
+      const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = await import('docx')
+
+      const children = []
+
+      children.push(
+        new Paragraph({
+          text: 'Product Requirements Document',
+          heading: HeadingLevel.TITLE,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 200 },
+        }),
+        new Paragraph({
+          text: project.project_name,
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 400 },
+        })
+      )
+
+      SECTIONS.forEach(({ key, label }) => {
+        children.push(
+          new Paragraph({
+            text: label,
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 },
+          })
+        )
+        const content = doc[key] || ''
+        content.split('\n').forEach((line) => {
+          children.push(
+            new Paragraph({
+              children: [new TextRun({ text: line || '', size: 22 })],
+              spacing: { after: 120 },
+            })
+          )
+        })
+      })
+
+      const docFile = new Document({ sections: [{ properties: {}, children }] })
+      const blob = await Packer.toBlob(docFile)
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${project.project_name.replace(/\s+/g, '_')}_PRD.docx`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Download failed:', err)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
-    <section className="results-display">
-      <h2 className="results-title">Generated Product Requirement Document (PRD)</h2>
-      <div className="sections-container">
-        {orderedSections.map((sec) => {
-          const content = sections[sec.key];
-          return (
-            <SectionCard 
-              key={sec.key} 
-              title={sec.title} 
-              content={content} 
-            />
-          );
-        })}
-      </div>
-    </section>
-  );
-};
+    <div style={{ marginTop: '24px' }}>
 
-export default ResultsDisplay;
+      {/* PRD Header */}
+      <div style={{ marginBottom: '24px' }}>
+        <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+          Generated Product Requirement Document (PRD)
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '6px' }}>
+          {project.project_name}
+        </p>
+      </div>
+
+      {/* Single big PRD box — all 7 sections */}
+      <div style={{
+        background: 'var(--card-bg)',
+        border: '1px solid var(--border)',
+        borderRadius: '12px',
+        overflow: 'hidden',
+      }}>
+        {SECTIONS.map(({ key, label }, index) => (
+          <div
+            key={key}
+            style={{
+              padding: '28px 32px',
+              borderBottom: index !== SECTIONS.length - 1 ? '1px solid var(--border)' : 'none',
+            }}
+          >
+            <h2 style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '12px', marginTop: 0 }}>
+              {label}
+            </h2>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.7', whiteSpace: 'pre-wrap', margin: 0 }}>
+              {doc[key] || 'No content generated for this section.'}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Download button — bottom right */}
+      <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 20px',
+            background: downloading ? '#888' : 'linear-gradient(to right, #f97316, #fb923c)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: downloading ? 'not-allowed' : 'pointer',
+            transition: 'opacity 0.2s',
+            opacity: downloading ? 0.6 : 1,
+          }}
+        >
+          {downloading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              <span>Downloading...</span>
+            </>
+          ) : (
+            <>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Download as DOCX</span>
+            </>
+          )}
+        </button>
+      </div>
+
+    </div>
+  )
+}
+
+export default ResultsDisplay

@@ -7,7 +7,6 @@ SECTION_KEYS = [
     "summary",
     "features",
     "user_stories",
-    "techstack",
     "db_design",
     "apis",
     "test_cases",
@@ -18,7 +17,6 @@ SECTION_LABELS: dict[str, str] = {
     "summary":      "PROJECT SUMMARY",
     "features":     "FEATURES",
     "user_stories": "USER STORIES",
-    "techstack":    "TECH STACK",
     "db_design":    "DATABASE DESIGN",
     "apis":         "API SUGGESTIONS",
     "test_cases":   "TEST CASES",
@@ -34,7 +32,7 @@ def build_prompt(project_name: str, description: str) -> str:
 Project Name: {project_name}
 Project Description: {description}
 
-Generate a complete, production-grade PRD strictly following this schema for ALL eight sections.
+Generate a complete, production-grade PRD strictly following this schema for ALL seven sections.
 
 ---
 
@@ -64,17 +62,6 @@ Acceptance Criteria:
   - [specific testable condition 1]
   - [specific testable condition 2]
 Write at least 6 user stories covering the core flows of the product.
-
----
-
-TECH STACK
-Recommend the full technology stack for this project:
-- Frontend: Framework, libraries, styling solution, and key packages.
-- Backend: Language, framework, and key libraries.
-- Database: Primary database and any caching/search layers.
-- Infrastructure: Hosting, CI/CD, containerisation, and monitoring tools.
-- Third-party services: Any external APIs, payment gateways, or SaaS tools.
-Briefly justify each choice in 1-2 sentences.
 
 ---
 
