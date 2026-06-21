@@ -49,7 +49,7 @@ def update_project(db: Session, project: Project, data: ProjectCreate) -> Projec
 
 def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> None:
     """
-    Save all 7 sections as a single GeneratedDocument row.
+    Save all 8 sections as a single GeneratedDocument row.
     Each section is stored in its own column. Overwrites if it exists.
     """
     document = db.query(GeneratedDocument).filter(GeneratedDocument.project_id == project_id).first()
