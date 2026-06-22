@@ -35,6 +35,15 @@ def get_all_projects(db: Session, user_id: str) -> list[Project]:
     )
 
 
+def update_project(db: Session, project: Project, data: ProjectCreate) -> Project:
+    """Update name and description of an existing project."""
+    project.project_name = data.project_name.strip()
+    project.description = data.description.strip()
+    db.commit()
+    db.refresh(project)
+    return project
+
+
 def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> None:
     """
     Save all 8 sections as a single GeneratedDocument row.
@@ -102,6 +111,7 @@ def edit_project_prd(
         "summary": document.summary,
         "features": document.features,
         "user_stories": document.user_stories,
+        "techstack": document.techstack,
         "db_design": document.db_design,
         "apis": document.apis,
         "test_cases": document.test_cases,
@@ -109,13 +119,13 @@ def edit_project_prd(
     }
 
     old_project_name = project.project_name
-    section_keys = ["summary", "features", "user_stories", "db_design", "apis", "test_cases", "dev_plan"]
+    section_keys = ["summary", "features", "user_stories", "techstack", "db_design", "apis", "test_cases", "dev_plan"]
 
     # Part A: Project Name Edit (Find-and-replace)
     if new_project_name and new_project_name.strip() != old_project_name:
         new_name_clean = new_project_name.strip()
         
-        # Perform literal replacement in all 7 sections
+        # Perform literal replacement in all sections
         for key in section_keys:
             if sections[key]:
                 sections[key] = sections[key].replace(old_project_name, new_name_clean)
@@ -127,6 +137,7 @@ def edit_project_prd(
         document.summary = sections["summary"]
         document.features = sections["features"]
         document.user_stories = sections["user_stories"]
+        document.techstack = sections["techstack"]
         document.db_design = sections["db_design"]
         document.apis = sections["apis"]
         document.test_cases = sections["test_cases"]

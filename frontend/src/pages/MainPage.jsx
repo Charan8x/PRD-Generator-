@@ -291,8 +291,7 @@ const MainPage = ({ token, onLogout }) => {
               <div className="content-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                   <div style={{ flex: 1 }}>
-                    <h1 className="main-title" style={{ fontSize: '24px', marginBottom: '8px' }}>{currentProjectName}</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{currentProjectDescription}</p>
+                    <h1 className="main-title" style={{ fontSize: '24px', marginBottom: '0' }}>{currentProjectName}</h1>
                   </div>
                   {!isEditing && (
                     <button

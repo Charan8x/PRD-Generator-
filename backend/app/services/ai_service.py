@@ -175,7 +175,7 @@ def generate_prd(project_name: str, description: str) -> dict[str, str]:
             print(traceback.format_exc())
             raise Exception(f"Groq API error: {str(e)}")
 
-    raw_text: str = response.choices[0].message.content
+    raw_text: str = response.choices[0].message.content or ""
     print(f"\n[AI SERVICE] Raw response preview:\n{raw_text[:300]}\n")
     sections = parse_sections(raw_text)
 
@@ -292,5 +292,5 @@ User's Edit Request: {edit_request}
             print(traceback.format_exc())
             raise Exception(f"Groq API error: {str(e)}")
 
-    raw_text: str = response.choices[0].message.content
+    raw_text: str = response.choices[0].message.content or ""
     return parse_edit_response(raw_text)
