@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - AI Product Planner</title>
   <!-- Prevent theme flashing (FOUC) before CSS renders -->
   <script>
-    (function() {
+    (function () {
       var storedTheme = localStorage.getItem('theme-preference');
       var theme = storedTheme;
       if (!theme) {
@@ -19,6 +20,7 @@
   <script src="/theme-toggle.js" defer></script>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="dashboard-container">
     <!-- Left Sidebar -->
@@ -26,14 +28,15 @@
       <div class="sidebar-header">
         <a href="#" class="app-logo">
           <div class="app-logo-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
           <span>Antigravity Plan</span>
         </a>
       </div>
-      
+
       <div class="sidebar-content">
         <div class="sidebar-section">
           <h3 class="sidebar-title">Project History</h3>
@@ -71,11 +74,12 @@
           </ul>
         </div>
       </div>
-      
+
       <div class="sidebar-footer">
         <!-- Logout button styled to link back to login page -->
         <a href="login.html" class="btn btn-secondary" style="text-decoration: none;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -93,30 +97,36 @@
           <div class="dashboard-form-row">
             <div class="dashboard-input-group">
               <label for="project-name" class="dashboard-label">Project Name</label>
-              <input type="text" id="project-name" name="project_name" class="dashboard-input" placeholder="e.g., Secure Wallet Integration" required>
+              <input type="text" id="project-name" name="project_name" class="dashboard-input"
+                placeholder="e.g., Secure Wallet Integration" required>
             </div>
           </div>
           <div class="dashboard-form-row">
             <div class="dashboard-input-group">
               <label for="project-description" class="dashboard-label">Project Description</label>
-              <textarea id="project-description" name="project_description" class="dashboard-input" placeholder="Describe the product scope, core requirements, target user personas, and what problem you are solving..." required></textarea>
-              <div id="desc-error-msg" class="validation-error-message hidden" style="color: var(--error); font-size: 13px; font-weight: 500; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+              <textarea id="project-description" name="project_description" class="dashboard-input"
+                placeholder="Describe the product scope, core requirements, target user personas, and what problem you are solving..."
+                required></textarea>
+              <div id="desc-error-msg" class="validation-error-message hidden"
+                style="color: var(--error); font-size: 13px; font-weight: 500; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
                 <span>❌ Project description is required.</span>
               </div>
             </div>
           </div>
-          
+
           <div class="dashboard-form-footer">
             <button type="submit" class="btn btn-accent" style="width: auto;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="5 3 19 12 5 21 5 3"></polygon>
               </svg>
               <span>Generate Plan</span>
             </button>
-            
+
             <!-- Validation Error Alert. Hidden by default via class 'hidden' -->
             <div id="validation-message" class="alert alert-danger hidden" style="width: 100%; margin-top: 8px;">
-              <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="12" y1="8" x2="12" y2="12"></line>
                 <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -135,7 +145,8 @@
 
       <!-- Error Message Banner (Hidden by default) -->
       <section id="error-message" class="alert alert-danger hidden">
-        <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="alert-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -145,7 +156,7 @@
 
       <!-- PRD Generation Results Section -->
       <section id="results-section" class="results-section-wrapper">
-        <h2 class="results-header-title">Product Requirements Document (PRD)</h2>
+        <h2 class="results-header-title">Product Requirements Document</h2>
 
         <!-- 1. Project Summary -->
         <article class="prd-card">
@@ -154,8 +165,12 @@
             <h3>Project Summary</h3>
           </div>
           <div class="prd-card-content">
-            <p><strong>Goal:</strong> Provide a unified dashboard and command line interface that analyzes code check-ins for styling issues, vulnerability exposures, and architectural anti-patterns, using lightweight local fine-tuned language model agents.</p>
-            <p>The system is tailored for teams seeking high security and low latency in their automated PR reviews, bypassing third-party cloud service vulnerabilities. This ensures zero source code leaks while supplying instant, actionable refactoring plans directly in developer terminals and central team dashboards.</p>
+            <p><strong>Goal:</strong> Provide a unified dashboard and command line interface that analyzes code
+              check-ins for styling issues, vulnerability exposures, and architectural anti-patterns, using lightweight
+              local fine-tuned language model agents.</p>
+            <p>The system is tailored for teams seeking high security and low latency in their automated PR reviews,
+              bypassing third-party cloud service vulnerabilities. This ensures zero source code leaks while supplying
+              instant, actionable refactoring plans directly in developer terminals and central team dashboards.</p>
           </div>
         </article>
 
@@ -167,10 +182,14 @@
           </div>
           <div class="prd-card-content">
             <ul>
-              <li><strong>Local AI Static Analysis:</strong> Securely evaluate syntax, complexity, and performance defects within local offline parameters.</li>
-              <li><strong>Interactive Git Hooks:</strong> Block commits automatically when critical security vulnerabilities or architectural violations are detected.</li>
-              <li><strong>Central Team Dashboard:</strong> Aggregate metrics, code health history, and lint compliance across multiple code repositories.</li>
-              <li><strong>Refactor Suggestion Interface:</strong> Apply suggestions with one click through our custom IDE panel extensions.</li>
+              <li><strong>Local AI Static Analysis:</strong> Securely evaluate syntax, complexity, and performance
+                defects within local offline parameters.</li>
+              <li><strong>Interactive Git Hooks:</strong> Block commits automatically when critical security
+                vulnerabilities or architectural violations are detected.</li>
+              <li><strong>Central Team Dashboard:</strong> Aggregate metrics, code health history, and lint compliance
+                across multiple code repositories.</li>
+              <li><strong>Refactor Suggestion Interface:</strong> Apply suggestions with one click through our custom
+                IDE panel extensions.</li>
             </ul>
           </div>
         </article>
@@ -183,9 +202,12 @@
           </div>
           <div class="prd-card-content">
             <ol>
-              <li>As a <strong>Developer</strong>, I want to receive immediate refactoring tips on git push so that I can address issues before sending a Pull Request.</li>
-              <li>As a <strong>Security Engineer</strong>, I want to enforce static checks for secret keys and hardcoded passwords so that security flaws never reach production.</li>
-              <li>As a <strong>Team Lead</strong>, I want to view trend charts of codebase health and styling compliance over time so that I can guide code quality reviews during sprints.</li>
+              <li>As a <strong>Developer</strong>, I want to receive immediate refactoring tips on git push so that I
+                can address issues before sending a Pull Request.</li>
+              <li>As a <strong>Security Engineer</strong>, I want to enforce static checks for secret keys and hardcoded
+                passwords so that security flaws never reach production.</li>
+              <li>As a <strong>Team Lead</strong>, I want to view trend charts of codebase health and styling compliance
+                over time so that I can guide code quality reviews during sprints.</li>
             </ol>
           </div>
         </article>
@@ -197,7 +219,8 @@
             <h3>Database Design</h3>
           </div>
           <div class="prd-card-content">
-            <p>The schema relies on standard relational tables supporting indexing on active user sessions and workspace tracking details.</p>
+            <p>The schema relies on standard relational tables supporting indexing on active user sessions and workspace
+              tracking details.</p>
             <pre><code>-- Database Schema Outline (PostgreSQL)
 
 CREATE TABLE users (
@@ -259,10 +282,14 @@ Response: { "task_id": "t-8271a", "status": "completed", "result": { ... } }</co
           </div>
           <div class="prd-card-content">
             <ul>
-              <li><strong>TC-101:</strong> Verify that registration fails with clear alerts when the email format is invalid or password length is under 8 characters.</li>
-              <li><strong>TC-202:</strong> Confirm that the generate button transitions the page to a loading spinner state while disabled.</li>
-              <li><strong>TC-303:</strong> Assert that error banners trigger when API calls return code 500, with a message advising the user to try again.</li>
-              <li><strong>TC-404:</strong> Validate that the sidebar dynamically lists the 5 latest project history items, sorted by date in descending order.</li>
+              <li><strong>TC-101:</strong> Verify that registration fails with clear alerts when the email format is
+                invalid or password length is under 8 characters.</li>
+              <li><strong>TC-202:</strong> Confirm that the generate button transitions the page to a loading spinner
+                state while disabled.</li>
+              <li><strong>TC-303:</strong> Assert that error banners trigger when API calls return code 500, with a
+                message advising the user to try again.</li>
+              <li><strong>TC-404:</strong> Validate that the sidebar dynamically lists the 5 latest project history
+                items, sorted by date in descending order.</li>
             </ul>
           </div>
         </article>
@@ -276,9 +303,12 @@ Response: { "task_id": "t-8271a", "status": "completed", "result": { ... } }</co
           <div class="prd-card-content">
             <p>The roadmap targets an initial product version in three sprints:</p>
             <ol>
-              <li><strong>Sprint 1: UI Shell & Auth integration (Week 1):</strong> Complete HTML/CSS screens, configure routes, and wire basic API login hooks.</li>
-              <li><strong>Sprint 2: Task Orchestration & AI Planner (Week 2):</strong> Connect model pipeline, configure database repositories, and add generation states.</li>
-              <li><strong>Sprint 3: Validation, History lists & Deploy (Week 3):</strong> Implement dashboard filters, write unit/integration tests, and build container builds.</li>
+              <li><strong>Sprint 1: UI Shell & Auth integration (Week 1):</strong> Complete HTML/CSS screens, configure
+                routes, and wire basic API login hooks.</li>
+              <li><strong>Sprint 2: Task Orchestration & AI Planner (Week 2):</strong> Connect model pipeline, configure
+                database repositories, and add generation states.</li>
+              <li><strong>Sprint 3: Validation, History lists & Deploy (Week 3):</strong> Implement dashboard filters,
+                write unit/integration tests, and build container builds.</li>
             </ol>
           </div>
         </article>
@@ -287,4 +317,5 @@ Response: { "task_id": "t-8271a", "status": "completed", "result": { ... } }</co
   </div>
   <script src="JS/dashboard.js" defer></script>
 </body>
+
 </html>

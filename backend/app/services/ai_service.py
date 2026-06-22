@@ -51,9 +51,12 @@ Target Users: [Describe the primary and secondary users.]
 Scope: In scope: [list what is included]. Out of scope: [list what is excluded].
 
 FEATURES
-[Feature Name]: [What it does and why it matters. Priority: High/Medium/Low.]
-[Feature Name]: [What it does and why it matters. Priority: High/Medium/Low.]
-[Repeat for at least 6 features.]
+List all key features of the product. For each feature:
+- Feature Name: Short name.
+- Description: What it does and why it matters.
+Be specific. Avoid vague descriptions like "user-friendly interface". Aim for at least 6-8 features.
+
+---
 
 USER STORIES
 Write user stories in this exact format:

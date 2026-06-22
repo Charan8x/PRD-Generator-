@@ -12,7 +12,7 @@ const SECTIONS = [
   { key: 'dev_plan', label: '7. Development Plan' },
 ]
 
-const ResultsDisplay = ({ project, updatedSections = [] }) => {
+const ResultsDisplay = ({ project, updatedSections = [], isEditing, onStartEdit }) => {
   const [downloading, setDownloading] = useState(false)
 
   if (!project?.document) return null
