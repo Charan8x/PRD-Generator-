@@ -1,12 +1,15 @@
 from groq import Groq
 from app.config import settings
+import traceback
 
 client = Groq(api_key=settings.GROQ_API_KEY)
 
+# 8 section keys — order matters for the DOCX output
 SECTION_KEYS = [
     "summary",
     "features",
     "user_stories",
+    "techstack",
     "db_design",
     "apis",
     "test_cases",
@@ -17,6 +20,7 @@ SECTION_LABELS: dict[str, str] = {
     "summary":      "PROJECT SUMMARY",
     "features":     "FEATURES",
     "user_stories": "USER STORIES",
+    "techstack":    "TECH STACK",
     "db_design":    "DATABASE DESIGN",
     "apis":         "API SUGGESTIONS",
     "test_cases":   "TEST CASES",
@@ -27,92 +31,72 @@ LABEL_TO_KEY: dict[str, str] = {v: k for k, v in SECTION_LABELS.items()}
 
 
 def build_prompt(project_name: str, description: str) -> str:
-    return f"""You are a Senior Product Manager writing a formal Product Requirements Document (PRD).
+    return f"""You are a Senior Product Manager. Generate a complete Product Requirements Document (PRD) for the project below.
 
 Project Name: {project_name}
 Project Description: {description}
 
-Generate a complete, production-grade PRD strictly following this schema for ALL seven sections.
-
----
+Output EXACTLY eight sections in this order. Each section header must be on its own line in UPPERCASE exactly as shown. Do not repeat or echo these instructions in your output. Write the actual content directly.
 
 PROJECT SUMMARY
-Write an Executive Summary with:
-- Problem Statement: 1-2 sentences on the core pain point this project solves.
-- Proposed Solution: 1-2 sentences on what is being built and how it solves the problem.
-- Success Criteria: 3-5 measurable KPIs (use numbers, percentages, or time-based targets).
-- Target Users: Who are the primary and secondary users of this product.
-- Scope: What is IN scope and what is explicitly OUT of scope.
-
----
+Problem Statement: [State the core problem this project solves in 1-2 sentences.]
+Proposed Solution: [Describe what is being built and how it solves the problem in 1-2 sentences.]
+Success Criteria:
+- [Measurable KPI with a number or percentage]
+- [Measurable KPI with a number or percentage]
+- [Measurable KPI with a number or percentage]
+Target Users: [Describe the primary and secondary users.]
+Scope: In scope: [list what is included]. Out of scope: [list what is excluded].
 
 FEATURES
-List all key features of the product. For each feature:
-- Feature Name: Short name.
-- Description: What it does and why it matters.
-- Priority: High / Medium / Low.
-Be specific. Avoid vague descriptions like "user-friendly interface". Aim for at least 6-8 features.
-
----
+[Feature Name]: [What it does and why it matters. Priority: High/Medium/Low.]
+[Feature Name]: [What it does and why it matters. Priority: High/Medium/Low.]
+[Repeat for at least 6 features.]
 
 USER STORIES
-Write user stories in this exact format:
-As a [user type], I want to [action] so that [benefit].
-Acceptance Criteria:
-  - [specific testable condition 1]
-  - [specific testable condition 2]
-Write at least 6 user stories covering the core flows of the product.
+As a [user], I want to [action] so that [benefit].
+- [Acceptance criterion 1]
+- [Acceptance criterion 2]
+[Repeat for at least 6 user stories.]
 
----
+TECH STACK
+Frontend: [Technology] - [Why it fits this project]
+Backend: [Technology] - [Why it fits this project]
+Database: [Technology] - [Why it fits this project]
+Authentication: [Technology] - [Why it fits this project]
+File Storage: [Technology] - [Why it fits this project]
+Hosting: [Technology] - [Why it fits this project]
+[Add any other relevant layers]
 
 DATABASE DESIGN
-Provide a complete database schema:
-- List every table needed.
-- For each table list: column name, data type, constraints (PK, FK, NOT NULL, UNIQUE).
-- Explain the relationships between tables (one-to-one, one-to-many, many-to-many).
-- Include any indexes that should be created for performance.
-
----
+[Table Name]: [column name (type, constraints), ...] - [Purpose of this table]
+[Relationships: describe how tables relate]
+[Indexes: list any performance indexes]
 
 API SUGGESTIONS
-List all API endpoints needed. For each endpoint provide:
-- HTTP Method and Route (e.g. POST /users/register)
-- Purpose: What it does.
-- Request Body: Key fields expected.
-- Response: Key fields returned.
-- Auth Required: Yes / No.
-
----
+[METHOD] [/route] - [Purpose] - Auth: [Yes/No]
+Request: [key fields]
+Response: [key fields]
+[Repeat for all major endpoints]
 
 TEST CASES
-List important test cases. For each test case provide:
-- Test ID (e.g. TC-01)
-- Description: What is being tested.
-- Preconditions: What must be true before the test.
-- Steps: Numbered steps to execute.
-- Expected Result: What should happen.
-Cover: happy paths, validation errors, auth failures, and edge cases.
-
----
+TC-01: [What is being tested]
+Steps: [numbered steps]
+Expected: [expected result]
+[Repeat for at least 6 test cases covering happy path, validation, auth, edge cases]
 
 DEVELOPMENT PLAN
-Break development into phases:
-- Phase name and goal.
-- Tasks: specific implementation tasks.
-- Files or components involved.
-- Estimated effort (days or weeks).
-- Expected output or deliverable at the end of the phase.
-Include at least 4 phases: Foundation, Core Features, Testing and Polish, Deployment.
+Phase 1 - [Name]: [Goal]. Tasks: [list tasks]. Effort: [estimate]. Deliverable: [output].
+Phase 2 - [Name]: [Goal]. Tasks: [list tasks]. Effort: [estimate]. Deliverable: [output].
+Phase 3 - [Name]: [Goal]. Tasks: [list tasks]. Effort: [estimate]. Deliverable: [output].
+Phase 4 - [Name]: [Goal]. Tasks: [list tasks]. Effort: [estimate]. Deliverable: [output].
 
----
-
-STRICT RULES:
-- Every section header must appear EXACTLY as shown above in UPPERCASE on its own line.
-- Do not add any text before the first section header.
-- Every section must have detailed, specific, measurable content.
-- Do not use markdown symbols like **, ##, or *. Use plain text only.
-- Do not skip any section.
-- Do not add extra sections beyond the seven listed.
+RULES:
+- Output section headers EXACTLY as shown in UPPERCASE on their own line.
+- Do NOT include these instructions or template placeholders in your output.
+- Do NOT use markdown formatting like ** or ##.
+- Write real, specific content for this exact project. No generic filler.
+- Do not add any text before PROJECT SUMMARY.
 """
 
 
@@ -141,15 +125,22 @@ def parse_sections(raw_text: str) -> dict[str, str]:
 def generate_prd(project_name: str, description: str) -> dict[str, str]:
     prompt = build_prompt(project_name, description)
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        max_tokens=4096,
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-    )
+    try:
+        response = client.chat.completions.create(
+            model="openai/gpt-oss-120b",
+            max_tokens=4096,
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+        )
+    except Exception as e:
+        print(f"\n[AI SERVICE ERROR] Groq API call failed:")
+        print(traceback.format_exc())
+        raise Exception(f"Groq API error: {str(e)}")
 
     raw_text: str = response.choices[0].message.content
+    print(f"\n[AI SERVICE] Raw response preview:\n{raw_text[:300]}\n")
+
     sections = parse_sections(raw_text)
 
     missing = [key for key in SECTION_KEYS if key not in sections or not sections[key].strip()]

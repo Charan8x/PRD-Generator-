@@ -41,11 +41,12 @@ const MainPage = ({ token, onLogout }) => {
       
       if (projectData.document) {
         const doc = projectData.document;
-        // Only the 7 sections — no techstack
+        // All 8 sections
         setSelectedProjectSections({
           summary: doc.summary,
           features: doc.features,
           user_stories: doc.user_stories,
+          techstack: doc.techstack,
           db_design: doc.db_design,
           apis: doc.apis,
           test_cases: doc.test_cases,

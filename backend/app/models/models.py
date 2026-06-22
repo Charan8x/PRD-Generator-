@@ -17,7 +17,7 @@ class Project(Base):
         "GeneratedDocument",
         back_populates="project",
         cascade="all, delete-orphan",
-        uselist=False,  # one-to-one: one project has exactly one document row
+        uselist=False,
         lazy="select",
     )
 
@@ -31,14 +31,14 @@ class GeneratedDocument(Base):
     id = Column(Integer, primary_key=True, index=True)
     project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, unique=True)
 
-    # Each of the 8 sections gets its own column
-    summary = Column(Text, nullable=False)
-    features = Column(Text, nullable=False)
+    summary      = Column(Text, nullable=False)
+    features     = Column(Text, nullable=False)
     user_stories = Column(Text, nullable=False)
-    db_design = Column(Text, nullable=False)
-    apis = Column(Text, nullable=False)
-    test_cases = Column(Text, nullable=False)
-    dev_plan = Column(Text, nullable=False)
+    techstack    = Column(Text, nullable=False)
+    db_design    = Column(Text, nullable=False)
+    apis         = Column(Text, nullable=False)
+    test_cases   = Column(Text, nullable=False)
+    dev_plan     = Column(Text, nullable=False)
 
     project = relationship("Project", back_populates="document")
 
