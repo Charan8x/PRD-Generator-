@@ -156,6 +156,23 @@ export async function generateProject(token, id) {
 }
 
 /**
+ * Sends targeted edit and/or project rename request.
+ * Returns: ProjectEditResponse { project_id, project_name, sections }
+ */
+export async function editProject(token, id, data) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}/edit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  return handleResponse(response);
+}
+
+
+/**
  * Updates an existing project's name and description.
  * Returns: ProjectOut
  */
