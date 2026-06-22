@@ -5,10 +5,11 @@ const SECTIONS = [
   { key: 'summary', label: '1. Project Summary' },
   { key: 'features', label: '2. Features' },
   { key: 'user_stories', label: '3. User Stories' },
-  { key: 'db_design', label: '4. Database Design' },
-  { key: 'apis', label: '5. API Suggestions' },
-  { key: 'test_cases', label: '6. Test Cases' },
-  { key: 'dev_plan', label: '7. Development Plan' },
+  { key: 'techstack', label: '4. Tech Stack' },
+  { key: 'db_design', label: '5. Database Design' },
+  { key: 'apis', label: '6. API Suggestions' },
+  { key: 'test_cases', label: '7. Test Cases' },
+  { key: 'dev_plan', label: '8. Development Plan' },
 ]
 
 const ResultsDisplay = ({ project }) => {
@@ -87,7 +88,7 @@ const ResultsDisplay = ({ project }) => {
         </p>
       </div>
 
-      {/* Single big PRD box — all 7 sections */}
+      {/* Single big PRD box — all 8 sections */}
       <div style={{
         background: 'var(--card-bg)',
         border: '1px solid var(--border)',
@@ -129,8 +130,8 @@ const ResultsDisplay = ({ project }) => {
             fontSize: '14px',
             fontWeight: '600',
             cursor: downloading ? 'not-allowed' : 'pointer',
-            transition: 'opacity 0.2s',
             opacity: downloading ? 0.6 : 1,
+            transition: 'opacity 0.2s',
           }}
         >
           {downloading ? (
