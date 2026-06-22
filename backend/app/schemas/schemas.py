@@ -26,6 +26,18 @@ class ProjectCreate(BaseModel):
         return v
 
 
+class ProjectRename(BaseModel):
+    project_name: str
+
+    @field_validator("project_name")
+    @classmethod
+    def name_must_not_be_empty(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("project_name cannot be empty")
+        return v
+
+
 # ─── Response Schemas ─────────────────────────────────────────────────────────
 
 class DocumentOut(BaseModel):
