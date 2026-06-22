@@ -157,29 +157,6 @@
   color: var(--text-muted);
 }
 
-.logout-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  border-radius: var(--border-radius-md);
-  font-family: var(--font-family);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 11px 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  outline: none;
-}
-
-.logout-button:hover {
-  background-color: var(--bg-card);
-  border-color: var(--accent-coral);
-}
 
 /* Header */
 .main-title {
