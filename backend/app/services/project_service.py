@@ -74,3 +74,101 @@ def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> No
         )
         db.add(document)
     db.commit()
+
+
+def edit_project_prd(
+    db: Session,
+    project: Project,
+    new_project_name: str | None,
+    edit_request: str | None,
+    target_section: str | None,
+) -> tuple[Project, dict[str, str]]:
+    """
+    Handles rename find-and-replace (Part A) and targeted AI edit (Part B),
+    updating the Projects and GeneratedDocument tables, and appending logs to description.
+    """
+    from datetime import datetime
+    from app.services import ai_service
+
+    document = project.document
+    if not document:
+        raise ValueError("Cannot edit a project that has no generated PRD document.")
+
+    sections = {
+        "summary": document.summary,
+        "features": document.features,
+        "user_stories": document.user_stories,
+        "db_design": document.db_design,
+        "apis": document.apis,
+        "test_cases": document.test_cases,
+        "dev_plan": document.dev_plan,
+    }
+
+    old_project_name = project.project_name
+    section_keys = ["summary", "features", "user_stories", "db_design", "apis", "test_cases", "dev_plan"]
+
+    # Part A: Project Name Edit (Find-and-replace)
+    if new_project_name and new_project_name.strip() != old_project_name:
+        new_name_clean = new_project_name.strip()
+        
+        # Perform literal replacement in all 7 sections
+        for key in section_keys:
+            if sections[key]:
+                sections[key] = sections[key].replace(old_project_name, new_name_clean)
+
+        # Update Project Name in DB
+        project.project_name = new_name_clean
+        
+        # Save renamed sections to document
+        document.summary = sections["summary"]
+        document.features = sections["features"]
+        document.user_stories = sections["user_stories"]
+        document.db_design = sections["db_design"]
+        document.apis = sections["apis"]
+        document.test_cases = sections["test_cases"]
+        document.dev_plan = sections["dev_plan"]
+
+        # Append log entry to Projects.description
+        timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        log_entry = (
+            f"\n\n---EDIT [{timestamp}]---\n"
+            f"Request: Renamed project from \"{old_project_name}\" to \"{new_name_clean}\"\n"
+            f"Section(s) updated: all (name replacement)\n"
+        )
+        project.description += log_entry
+
+    # Part B: Content Edit (Targeted Edit)
+    if edit_request and edit_request.strip():
+        # Call AI service for targeted edit using current (possibly renamed) sections
+        mapped_target = target_section
+        if target_section == "development_plan":
+            mapped_target = "dev_plan"
+
+        changed_sections = ai_service.generate_edit_prd(
+            project_name=project.project_name,
+            current_sections=sections,
+            edit_request=edit_request.strip(),
+            target_section=mapped_target,
+        )
+
+        # Update document only for changed columns
+        for key, new_content in changed_sections.items():
+            if key in sections:
+                sections[key] = new_content
+                setattr(document, key, new_content)
+
+        # Append log entry to Projects.description
+        timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        updated_keys = ", ".join(changed_sections.keys())
+        log_entry = (
+            f"\n\n---EDIT [{timestamp}]---\n"
+            f"Request: {edit_request.strip()}\n"
+            f"Section(s) updated: {updated_keys}\n"
+        )
+        project.description += log_entry
+
+    db.commit()
+    db.refresh(project)
+    db.refresh(document)
+
+    return project, sections

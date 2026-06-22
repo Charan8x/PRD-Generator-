@@ -141,13 +141,24 @@ def parse_sections(raw_text: str) -> dict[str, str]:
 def generate_prd(project_name: str, description: str) -> dict[str, str]:
     prompt = build_prompt(project_name, description)
 
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        max_tokens=4096,
-        messages=[
-            {"role": "user", "content": prompt}
-        ],
-    )
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            max_tokens=4096,
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+        )
+    except Exception as e:
+        import sys
+        print(f"Primary model llama-3.3-70b-versatile failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
+        response = client.chat.completions.create(
+            model="qwen/qwen3.6-27b",
+            max_tokens=4096,
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+        )
 
     raw_text: str = response.choices[0].message.content
     sections = parse_sections(raw_text)
@@ -157,3 +168,106 @@ def generate_prd(project_name: str, description: str) -> dict[str, str]:
         raise ValueError(f"AI response is missing sections: {missing}. Raw response: {raw_text[:500]}")
 
     return sections
+
+
+EDIT_LABEL_TO_KEY = {
+    "SUMMARY:": "summary",
+    "FEATURES:": "features",
+    "USER_STORIES:": "user_stories",
+    "DB_DESIGN:": "db_design",
+    "APIS:": "apis",
+    "TEST_CASES:": "test_cases",
+    "DEVELOPMENT_PLAN:": "dev_plan"
+}
+
+
+def parse_edit_response(raw_text: str) -> dict[str, str]:
+    sections: dict[str, str] = {}
+    current_key: str | None = None
+    current_lines: list[str] = []
+
+    for line in raw_text.splitlines():
+        stripped = line.strip()
+        upper_stripped = stripped.upper()
+        if upper_stripped in EDIT_LABEL_TO_KEY:
+            if current_key is not None:
+                sections[current_key] = "\n".join(current_lines).strip()
+            current_key = EDIT_LABEL_TO_KEY[upper_stripped]
+            current_lines = []
+        else:
+            if current_key is not None:
+                current_lines.append(line)
+
+    if current_key is not None:
+        sections[current_key] = "\n".join(current_lines).strip()
+
+    return sections
+
+
+def generate_edit_prd(
+    project_name: str,
+    current_sections: dict[str, str],
+    edit_request: str,
+    target_section: str | None
+) -> dict[str, str]:
+    context_lines = []
+    labels_display = {
+        "summary": "Current Project Summary",
+        "features": "Current Features",
+        "user_stories": "Current User Stories",
+        "db_design": "Current Database Design",
+        "apis": "Current API Suggestions",
+        "test_cases": "Current Test Cases",
+        "dev_plan": "Current Development Plan"
+    }
+    
+    for key in SECTION_KEYS:
+        context_lines.append(f"{labels_display[key]}:\n{current_sections.get(key, '')}\n")
+    
+    context_str = "\n".join(context_lines)
+    target_str = target_section if target_section else "Auto-detect"
+    
+    user_prompt = f"""Current Project Name: {project_name}
+
+{context_str}
+Target Section: {target_str}
+User's Edit Request: {edit_request}
+"""
+
+    system_message = (
+        "You are a Senior Product Manager revising an existing project plan. You will "
+        "be given the full current PRD content and a specific change request. Your job "
+        "is to update ONLY the section(s) that the change request actually affects. Do "
+        "not regenerate sections that are not impacted. Do not repeat unchanged "
+        "sections in your response. Default to changing exactly one section unless the "
+        "request clearly requires changes across multiple sections (for example, a new "
+        "feature that needs a corresponding user story and API entry). Return only the "
+        "changed section(s), each labeled exactly as: SUMMARY:, FEATURES:, "
+        "USER_STORIES:, DB_DESIGN:, APIS:, TEST_CASES:, DEVELOPMENT_PLAN:. Do not add "
+        "commentary outside these labels."
+    )
+
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            max_tokens=4096,
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_prompt}
+            ],
+        )
+    except Exception as e:
+        import sys
+        print(f"Primary model llama-3.3-70b-versatile failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
+        response = client.chat.completions.create(
+            model="qwen/qwen3.6-27b",
+            max_tokens=4096,
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": user_prompt}
+            ],
+        )
+
+    raw_text: str = response.choices[0].message.content
+    return parse_edit_response(raw_text)
+

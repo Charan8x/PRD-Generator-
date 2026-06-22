@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ProjectHistory from '../components/ProjectHistory';
 import ProjectForm from '../components/ProjectForm';
 import ResultsDisplay from '../components/ResultsDisplay';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getProjectById, updateProject, generateProject } from '../api/client';
+import { getProjectById, editProject, getProjects } from '../api/client';
 
 /**
  * MainPage Component
@@ -27,13 +27,76 @@ const MainPage = ({ token, onLogout }) => {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
 
+  // Elevated projects list states
+  const [projects, setProjects] = useState([]);
+  const [projectsLoading, setProjectsLoading] = useState(false);
+  const [projectsError, setProjectsError] = useState('');
+
   // States for Screen 3 editing mode
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState('');
-  const [editDesc, setEditDesc] = useState('');
+  const [selectedSections, setSelectedSections] = useState([]);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [editRequest, setEditRequest] = useState('');
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState('');
-  const [editValError, setEditValError] = useState('');
+  const [updatedSections, setUpdatedSections] = useState([]);
+
+  const popoverRef = useRef(null);
+
+  const SECTION_LABELS = {
+    summary: 'Project Summary',
+    features: 'Features',
+    user_stories: 'User Stories',
+    db_design: 'Database Design',
+    apis: 'API Suggestions',
+    test_cases: 'Test Cases',
+    development_plan: 'Development Plan'
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+        setIsPopoverOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Fetch projects list at parent level to synchronize sidebar updates
+  useEffect(() => {
+    let isMounted = true;
+    
+    const fetchProjects = async () => {
+      if (!token) return;
+      setProjectsLoading(true);
+      setProjectsError('');
+      try {
+        const data = await getProjects(token);
+        if (isMounted) {
+          const sorted = [...data].sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
+          setProjects(sorted);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setProjectsError(err.message || 'Failed to load project history.');
+        }
+      } finally {
+        if (isMounted) {
+          setProjectsLoading(false);
+        }
+      }
+    };
+
+    fetchProjects();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [token, refreshTrigger]);
 
   // Callback when user selects a project from history
   const handleSelectProject = async (projectId) => {
@@ -42,6 +105,7 @@ const MainPage = ({ token, onLogout }) => {
     setSelectedProjectId(projectId);
     setSelectedProjectSections(null);
     setIsEditing(false);
+    setUpdatedSections([]);
 
     try {
       const projectData = await getProjectById(token, projectId);
@@ -84,6 +148,7 @@ const MainPage = ({ token, onLogout }) => {
     setSelectedProjectSections(sections);
     setFetchError('');
     setIsEditing(false);
+    setUpdatedSections([]);
     setCurrentScreen('generated');
     // Increment refresh trigger to tell ProjectHistory to fetch list again
     setRefreshTrigger(prev => prev + 1);
@@ -97,15 +162,17 @@ const MainPage = ({ token, onLogout }) => {
     setCurrentProjectDescription('');
     setFetchError('');
     setIsEditing(false);
+    setUpdatedSections([]);
     setCurrentScreen('input');
   };
 
   // Handles clicking "Edit" next to the project name/description on Screen 3
   const handleStartEdit = () => {
     setEditName(currentProjectName);
-    setEditDesc(currentProjectDescription);
+    setEditRequest('');
+    setSelectedSections([]);
+    setIsPopoverOpen(false);
     setEditError('');
-    setEditValError('');
     setIsEditing(true);
   };
 
@@ -114,41 +181,67 @@ const MainPage = ({ token, onLogout }) => {
     setIsEditing(false);
   };
 
-  // Handles clicking "Save & Regenerate" in Screen 3 edit mode
-  const handleSaveAndRegenerate = async (e) => {
+  // Handles clicking "Apply Edit" in Screen 3 edit mode
+  const handleApplyEdit = async (e) => {
     e.preventDefault();
     setEditError('');
-    setEditValError('');
 
-    if (!editDesc.trim()) {
-      setEditValError('Project description is required.');
+    const nameChanged = editName.trim() !== currentProjectName;
+    const hasContentEdit = editRequest.trim().length > 0;
+
+    if (!nameChanged && !hasContentEdit) {
+      setEditError('Please change the project name or enter an edit request.');
       return;
     }
 
-    if (!editName.trim()) {
+    if (nameChanged && !editName.trim()) {
       setEditError('Project Name is required.');
+      return;
+    }
+
+    if (hasContentEdit && selectedSections.length === 0) {
+      setEditError('Please add at least one section to edit.');
       return;
     }
 
     setEditLoading(true);
 
     try {
-      // Step 1: Update project name and description
-      await updateProject(token, selectedProjectId, editName, editDesc);
+      const data = {};
+      if (nameChanged) {
+        data.new_project_name = editName.trim();
+      }
+      if (hasContentEdit) {
+        data.edit_request = editRequest.trim();
+        data.target_sections = selectedSections;
+      }
 
-      // Step 2: Trigger regeneration
-      const generateResponse = await generateProject(token, selectedProjectId);
+      const response = await editProject(token, selectedProjectId, data);
+
+      // Compute which sections changed to trigger flash animation
+      const newlyUpdated = [];
+      if (selectedProjectSections) {
+        Object.keys(response.sections).forEach(key => {
+          if (response.sections[key] !== selectedProjectSections[key]) {
+            newlyUpdated.push(key);
+          }
+        });
+      }
 
       // Update state details
-      setCurrentProjectName(editName);
-      setCurrentProjectDescription(editDesc);
-      setSelectedProjectSections(generateResponse.sections);
+      setCurrentProjectName(response.project_name);
+      setSelectedProjectSections(response.sections);
+      setUpdatedSections(newlyUpdated);
 
-      // Refresh sidebar list
-      setRefreshTrigger(prev => prev + 1);
+      // Update sidebar locally without full reload
+      setProjects(prev => prev.map(p =>
+        p.id === selectedProjectId ? { ...p, project_name: response.project_name } : p
+      ));
+
+      setEditRequest('');
       setIsEditing(false);
     } catch (err) {
-      setEditError(err.message || 'Regeneration failed. Please try again.');
+      setEditError(err.message || 'Failed to apply edits. Please try again.');
     } finally {
       setEditLoading(false);
     }
@@ -159,8 +252,10 @@ const MainPage = ({ token, onLogout }) => {
       {/* Sidebar Section */}
       <ProjectHistory
         token={token}
+        projects={projects}
+        loading={projectsLoading}
+        error={projectsError}
         selectedProjectId={selectedProjectId}
-        refreshTrigger={refreshTrigger}
         onSelectProject={handleSelectProject}
         onNewPrd={handleNewPrd}
         onLogout={onLogout}
@@ -187,11 +282,46 @@ const MainPage = ({ token, onLogout }) => {
           <>
             {/* Screen 3 - Generated Plan View */}
             <section className="results-section" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              {isEditing ? (
+              <div className="content-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+                  <div style={{ flex: 1 }}>
+                    <h1 className="main-title" style={{ fontSize: '24px', marginBottom: '8px' }}>{currentProjectName}</h1>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{currentProjectDescription}</p>
+                  </div>
+                  {!isEditing && (
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      style={{ width: 'auto', padding: '6px 12px', fontSize: '12px', marginLeft: '16px', flexShrink: 0 }}
+                      onClick={handleStartEdit}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{ marginRight: '6px' }}>
+                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                      </svg>
+                      Edit PRD
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {isEditing && (
                 <div className="project-form-container" style={{ position: 'relative' }}>
-                  <h2 className="form-title">Edit PRD Details</h2>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h2 className="form-title" style={{ margin: 0 }}>Edit PRD Document</h2>
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      onClick={handleCancelEdit}
+                      style={{ width: 'auto', padding: '6px 12px', fontSize: '13px' }}
+                      disabled={editLoading}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
                   {editError && <ErrorMessage message={editError} />}
-                  <form onSubmit={handleSaveAndRegenerate} className="project-form">
+
+                  <form onSubmit={handleApplyEdit} className="project-form">
                     <div className="form-group">
                       <label htmlFor="editProjectName" className="form-label">Project Name</label>
                       <input
@@ -208,70 +338,201 @@ const MainPage = ({ token, onLogout }) => {
                       />
                     </div>
 
-                    <div className="form-group">
-                      <label htmlFor="editProjectDescription" className="form-label">Project Description</label>
-                      <textarea
-                        id="editProjectDescription"
-                        className={`form-textarea ${editValError ? 'input-error' : ''}`}
-                        placeholder="Describe your app's core features, target users, and goals..."
-                        value={editDesc}
-                        disabled={editLoading}
-                        onChange={(e) => {
-                          setEditDesc(e.target.value);
-                          if (e.target.value.trim()) {
-                            setEditValError('');
-                          }
-                        }}
-                        rows={5}
-                      />
-                      {editValError && (
-                        <p className="validation-error-message" role="alert" style={{ color: 'var(--error)', marginTop: '4px', fontSize: '13px', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                          ❌ Project description is required.
-                        </p>
+                    <div className="form-group" style={{ position: 'relative' }} ref={popoverRef}>
+                      <label className="form-label">Target Section(s)</label>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', minHeight: '38px' }}>
+                        <button
+                          type="button"
+                          className="btn-add-section"
+                          onClick={() => {
+                            if (!editLoading) {
+                              setIsPopoverOpen(prev => !prev);
+                            }
+                          }}
+                          disabled={editLoading}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '50%',
+                            border: '1px solid var(--border-color)',
+                            background: 'var(--bg-input)',
+                            color: 'var(--accent-coral)',
+                            cursor: editLoading ? 'not-allowed' : 'pointer',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            transition: 'all 0.2s ease',
+                            outline: 'none',
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!editLoading) {
+                              e.currentTarget.style.borderColor = 'var(--accent-coral)';
+                              e.currentTarget.style.boxShadow = '0 0 0 3px var(--input-glow)';
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = 'var(--border-color)';
+                            e.currentTarget.style.boxShadow = 'none';
+                          }}
+                        >
+                          +
+                        </button>
+
+                        {/* Chips Row */}
+                        {selectedSections.map((key) => (
+                          <div
+                            key={key}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              backgroundColor: 'var(--accent-bg-subtle)',
+                              border: '1px solid rgba(255, 107, 74, 0.3)',
+                              borderRadius: '20px',
+                              padding: '4px 10px 4px 12px',
+                              fontSize: '13px',
+                              fontWeight: '500',
+                              color: 'var(--accent-coral)',
+                              transition: 'all 0.2s ease',
+                            }}
+                          >
+                            <span>{SECTION_LABELS[key]}</span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (!editLoading) {
+                                  setSelectedSections(prev => prev.filter(k => k !== key));
+                                }
+                              }}
+                              disabled={editLoading}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '16px',
+                                height: '16px',
+                                borderRadius: '50%',
+                                border: 'none',
+                                background: 'rgba(255, 107, 74, 0.15)',
+                                color: 'var(--accent-coral)',
+                                cursor: editLoading ? 'not-allowed' : 'pointer',
+                                fontSize: '12px',
+                                lineHeight: 1,
+                                padding: 0,
+                                transition: 'all 0.15s ease',
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!editLoading) {
+                                  e.currentTarget.style.background = 'var(--accent-coral)';
+                                  e.currentTarget.style.color = '#fff';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'rgba(255, 107, 74, 0.15)';
+                                e.currentTarget.style.color = 'var(--accent-coral)';
+                              }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Dropdown/Popover List */}
+                      {isPopoverOpen && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '0',
+                            zIndex: 100,
+                            width: '240px',
+                            marginTop: '4px',
+                            backgroundColor: 'var(--bg-card)',
+                            border: '1px solid var(--border-color)',
+                            borderRadius: 'var(--border-radius-md)',
+                            boxShadow: 'var(--shadow-lg)',
+                            padding: '4px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '2px',
+                          }}
+                        >
+                          {(() => {
+                            const available = Object.keys(SECTION_LABELS).filter(
+                              (k) => !selectedSections.includes(k)
+                            );
+                            if (available.length === 0) {
+                              return (
+                                <div style={{ padding: '8px 12px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                                  All sections added
+                                </div>
+                              );
+                            }
+                            return available.map((k) => (
+                              <button
+                                key={k}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedSections(prev => [...prev, k]);
+                                  setIsPopoverOpen(false);
+                                }}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  width: '100%',
+                                  padding: '8px 12px',
+                                  borderRadius: 'var(--border-radius-sm)',
+                                  border: 'none',
+                                  background: 'none',
+                                  color: 'var(--text-primary)',
+                                  fontSize: '13px',
+                                  textAlign: 'left',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.15s ease',
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'var(--accent-bg-subtle)';
+                                  e.currentTarget.style.color = 'var(--accent-coral)';
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.backgroundColor = 'transparent';
+                                  e.currentTarget.style.color = 'var(--text-primary)';
+                                }}
+                              >
+                                {SECTION_LABELS[k]}
+                              </button>
+                            ));
+                          })()}
+                        </div>
                       )}
                     </div>
 
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                      <button
-                        type="submit"
-                        className="btn-primary"
-                        style={{ width: 'auto' }}
-                        disabled={!editName.trim() || editLoading}
-                      >
-                        {editLoading ? 'Regenerating...' : 'Save & Regenerate'}
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-secondary"
-                        style={{ width: 'auto' }}
+                    <div className="form-group">
+                      <label htmlFor="editRequestText" className="form-label">Describe your changes (Free text)</label>
+                      <textarea
+                        id="editRequestText"
+                        className="form-textarea"
+                        placeholder="e.g. Add OAuth login using Google, or add a column for profile pictures..."
+                        value={editRequest}
                         disabled={editLoading}
-                        onClick={handleCancelEdit}
-                      >
-                        Cancel
-                      </button>
+                        onChange={(e) => setEditRequest(e.target.value)}
+                        rows={4}
+                      />
                     </div>
+
+                    <button
+                      type="submit"
+                      className="btn-primary"
+                      disabled={editLoading || (!editRequest.trim() && editName.trim() === currentProjectName)}
+                      style={{ marginTop: '8px', width: 'auto' }}
+                    >
+                      {editLoading ? 'Applying Changes...' : 'Apply Edit'}
+                    </button>
                   </form>
                   {editLoading && <LoadingSpinner />}
-                </div>
-              ) : (
-                <div className="content-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-                    <div style={{ flex: 1 }}>
-                      <h1 className="main-title" style={{ fontSize: '24px', marginBottom: '8px' }}>{currentProjectName}</h1>
-                      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', lineHeight: '1.6', whiteSpace: 'pre-wrap' }}>{currentProjectDescription}</p>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      style={{ width: 'auto', padding: '6px 12px', fontSize: '12px', marginLeft: '16px', flexShrink: 0 }}
-                      onClick={handleStartEdit}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{ marginRight: '6px' }}>
-                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-                      </svg>
-                      Edit Details
-                    </button>
-                  </div>
                 </div>
               )}
 
@@ -284,7 +545,10 @@ const MainPage = ({ token, onLogout }) => {
               {fetchError && <ErrorMessage message={fetchError} />}
 
               {!fetchLoading && selectedProjectSections && (
-                <ResultsDisplay sections={selectedProjectSections} />
+                <ResultsDisplay 
+                  sections={selectedProjectSections} 
+                  updatedSections={updatedSections}
+                />
               )}
             </section>
           </>

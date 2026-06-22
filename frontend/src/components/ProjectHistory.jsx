@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProjects, logout } from '../api/client';
+import { logout } from '../api/client';
 import ErrorMessage from './ErrorMessage';
 
 /**
@@ -13,44 +13,7 @@ import ErrorMessage from './ErrorMessage';
  * @param {function} onSelectProject - Callback when a project is clicked.
  * @param {function} onLogout - Callback when the user logs out.
  */
-const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProject, onNewPrd, onLogout }) => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  // Fetch projects list on mount or when token changes
-  useEffect(() => {
-    let isMounted = true;
-    
-    const fetchProjects = async () => {
-      if (!token) return;
-      setLoading(true);
-      setError('');
-      try {
-        const data = await getProjects(token);
-        if (isMounted) {
-          // Sort projects newest to oldest just in case backend order varies
-          const sorted = [...data].sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-          setProjects(sorted);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message || 'Failed to load project history.');
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchProjects();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [token, refreshTrigger]);
-
+const ProjectHistory = ({ token, projects = [], loading = false, error = '', selectedProjectId, onSelectProject, onNewPrd, onLogout }) => {
   // Handle logout button click
   const handleLogoutClick = async () => {
     try {
@@ -123,8 +86,9 @@ const ProjectHistory = ({ token, selectedProjectId, refreshTrigger, onSelectProj
       <div className="sidebar-footer">
         <button
           type="button"
-          className="logout-button"
+          className="btn-primary"
           onClick={handleLogoutClick}
+          style={{ width: '100%', padding: '8px 12px', fontSize: '13px' }}
         >
           Logout
         </button>

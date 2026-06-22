@@ -9,7 +9,7 @@ import SectionCard from './SectionCard';
  * @param {Object} sections - An object containing the 7 generated sections:
  *                            { summary, features, user_stories, db_design, apis, test_cases, dev_plan }
  */
-const ResultsDisplay = ({ sections }) => {
+const ResultsDisplay = ({ sections, updatedSections = [] }) => {
   if (!sections) return null;
 
   // The seven sections in the requested order with their respective titles
@@ -34,6 +34,7 @@ const ResultsDisplay = ({ sections }) => {
               key={sec.key} 
               title={sec.title} 
               content={content} 
+              isUpdated={updatedSections.includes(sec.key)}
             />
           );
         })}
@@ -41,5 +42,6 @@ const ResultsDisplay = ({ sections }) => {
     </section>
   );
 };
+
 
 export default ResultsDisplay;
