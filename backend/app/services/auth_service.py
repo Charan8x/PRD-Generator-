@@ -69,7 +69,7 @@ def get_current_user(token: str) -> dict:
     try:
         response = supabase.auth.get_user(token)
 
-        if response.user is None:
+        if response is None or response.user is None:
             raise ValueError("Invalid or expired token.")
 
         return {

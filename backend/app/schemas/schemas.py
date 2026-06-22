@@ -46,7 +46,7 @@ class DocumentOut(BaseModel):
     summary: str
     features: str
     user_stories: str
-    techstack: Optional[str] = None
+    techstack: str
     db_design: str
     apis: str
     test_cases: str
@@ -71,7 +71,7 @@ class ProjectWithDocuments(BaseModel):
     project_name: str
     description: str
     created_date: datetime
-    document: Optional[DocumentOut] = None  # None if generation hasn't run yet
+    document: Optional[DocumentOut] = None
 
     model_config = {"from_attributes": True}
 
@@ -79,3 +79,16 @@ class ProjectWithDocuments(BaseModel):
 class GenerateResponse(BaseModel):
     project_id: int
     sections: dict[str, str]  # section_name -> content, for frontend convenience
+
+
+class ProjectEditRequest(BaseModel):
+    new_project_name: Optional[str] = None
+    edit_request: Optional[str] = None
+    target_section: Optional[str] = None
+    target_sections: Optional[list[str]] = None
+
+
+class ProjectEditResponse(BaseModel):
+    project_id: int
+    project_name: str
+    sections: dict[str, str]
