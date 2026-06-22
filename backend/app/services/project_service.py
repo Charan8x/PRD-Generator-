@@ -84,9 +84,6 @@ def rename_project(db: Session, project: Project, project_name: str) -> Project:
     return project
 
 
-
-
-
 def delete_project(db: Session, project: Project) -> None:
     """Delete a project and its cascade relations."""
     db.delete(project)

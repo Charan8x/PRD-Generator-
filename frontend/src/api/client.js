@@ -173,11 +173,6 @@ export async function updateProject(token, id, projectName, description) {
   });
   return handleResponse(response);
 }
-
-/**
- * Renames a project using PATCH /projects/{id}.
- * Returns: ProjectOut
- */
 export async function renameProject(token, id, projectName) {
   const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: 'PATCH',
@@ -191,8 +186,6 @@ export async function renameProject(token, id, projectName) {
   });
   return handleResponse(response);
 }
-
-
 
 /**
  * Permanently deletes a project using DELETE /projects/{id}.
@@ -210,3 +203,4 @@ export async function deleteProject(token, id) {
   }
   return handleResponse(response);
 }
+
