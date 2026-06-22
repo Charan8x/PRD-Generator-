@@ -1,34 +1,128 @@
-import React from 'react';
-import SectionCard from './SectionCard';
+import { useState } from 'react'
+import LoadingSpinner from './LoadingSpinner'
+import SectionCard from './SectionCard'
 
-/**
- * ResultsDisplay Component
- * Responsible for rendering all seven generated sections in the required order.
- * 
- * Props:
- * @param {Object} sections - An object containing the 7 generated sections:
- *                            { summary, features, user_stories, db_design, apis, test_cases, dev_plan }
- */
-const ResultsDisplay = ({ sections, updatedSections = [] }) => {
-  if (!sections) return null;
+const SECTIONS = [
+  { key: 'summary', title: '1. Project Summary' },
+  { key: 'features', title: '2. Features' },
+  { key: 'user_stories', title: '3. User Stories' },
+  { key: 'db_design', title: '4. Database Design' },
+  { key: 'apis', title: '5. API Suggestions' },
+  { key: 'test_cases', title: '6. Test Cases' },
+  { key: 'dev_plan', title: '7. Development Plan' }
+]
 
-  // The seven sections in the requested order with their respective titles
-  const orderedSections = [
-    { key: 'summary', title: '1. Project Summary' },
-    { key: 'features', title: '2. Features' },
-    { key: 'user_stories', title: '3. User Stories' },
-    { key: 'db_design', title: '4. Database Design' },
-    { key: 'apis', title: '5. API Suggestions' },
-    { key: 'test_cases', title: '6. Test Cases' },
-    { key: 'dev_plan', title: '7. Development Plan' },
-  ];
+const ResultsDisplay = ({ project, updatedSections = [] }) => {
+  const [downloading, setDownloading] = useState(false)
+
+  if (!project?.document) return null
+
+  const doc = project.document
+
+  const handleDownload = async () => {
+    setDownloading(true)
+    try {
+      const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = await import('docx')
+
+      const children = []
+
+      children.push(
+        new Paragraph({
+          text: 'Product Requirements Document',
+          heading: HeadingLevel.TITLE,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 200 },
+        }),
+        new Paragraph({
+          text: project.project_name,
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 400 },
+        })
+      )
+
+      SECTIONS.forEach(({ key, title }) => {
+        children.push(
+          new Paragraph({
+            text: title,
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 400, after: 200 },
+          })
+        )
+        const content = doc[key] || ''
+        content.split('\n').forEach((line) => {
+          children.push(
+            new Paragraph({
+              children: [new TextRun({ text: line || '', size: 22 })],
+              spacing: { after: 120 },
+            })
+          )
+        })
+      })
+
+      const docFile = new Document({ sections: [{ properties: {}, children }] })
+      const blob = await Packer.toBlob(docFile)
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${project.project_name.replace(/\s+/g, '_')}_PRD.docx`
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Download failed:', err)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   return (
-    <section className="results-display">
-      <h2 className="results-title">Generated Product Requirement Document (PRD)</h2>
-      <div className="sections-container">
-        {orderedSections.map((sec) => {
-          const content = sections[sec.key];
+    <div style={{ marginTop: '24px' }}>
+      {/* PRD Header & Download Button Row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+            Generated Product Requirement Document (PRD)
+          </h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '6px', margin: 0 }}>
+            {project.project_name}
+          </p>
+        </div>
+        
+        <button
+          onClick={handleDownload}
+          disabled={downloading}
+          className="btn-primary"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 20px',
+            width: 'auto',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: downloading ? 'not-allowed' : 'pointer',
+          }}
+        >
+          {downloading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              <span>Downloading...</span>
+            </>
+          ) : (
+            <>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Download as DOCX</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Sections Container using SectionCard */}
+      <div className="sections-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {SECTIONS.map((sec) => {
+          const content = doc[sec.key];
           return (
             <SectionCard 
               key={sec.key} 
@@ -39,9 +133,8 @@ const ResultsDisplay = ({ sections, updatedSections = [] }) => {
           );
         })}
       </div>
-    </section>
-  );
-};
+    </div>
+  )
+}
 
-
-export default ResultsDisplay;
+export default ResultsDisplay

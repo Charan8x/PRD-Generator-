@@ -6,15 +6,6 @@ import ErrorMessage from '../components/ErrorMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getProjectById, editProject, getProjects } from '../api/client';
 
-/**
- * MainPage Component
- * The main application page containing the workspace layout.
- * Includes the Project History sidebar and the main area for project creation and results view.
- * 
- * Props:
- * @param {string} token - The authenticated user's JWT token.
- * @param {function} onLogout - Callback to sign the user out.
- */
 const MainPage = ({ token, onLogout }) => {
   const [currentScreen, setCurrentScreen] = useState('input'); // 'input' (Screen 2) or 'generated' (Screen 3)
   const [selectedProjectId, setSelectedProjectId] = useState(null);
@@ -22,8 +13,7 @@ const MainPage = ({ token, onLogout }) => {
   const [currentProjectName, setCurrentProjectName] = useState('');
   const [currentProjectDescription, setCurrentProjectDescription] = useState('');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
-  
-  // States for fetching a project's existing PRD document
+
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchError, setFetchError] = useState('');
 
@@ -114,8 +104,8 @@ const MainPage = ({ token, onLogout }) => {
       setCurrentProjectDescription(projectData.description);
       
       if (projectData.document) {
-        // Map the database document columns to the sections expected by ResultsDisplay
         const doc = projectData.document;
+        // Only the 7 sections — no techstack
         setSelectedProjectSections({
           summary: doc.summary,
           features: doc.features,
@@ -247,9 +237,23 @@ const MainPage = ({ token, onLogout }) => {
     }
   };
 
+  const handleProjectRenamed = (projectId, newName) => {
+    if (selectedProjectId === projectId) {
+      setCurrentProjectName(newName);
+    }
+    setProjects(prev => prev.map(p => p.id === projectId ? { ...p, project_name: newName } : p));
+  };
+
+  const handleProjectDeleted = (projectId) => {
+    if (selectedProjectId === projectId) {
+      handleNewPrd();
+    }
+    setProjects(prev => prev.filter(p => p.id !== projectId));
+  };
   return (
     <div className="main-page-container">
-      {/* Sidebar Section */}
+
+      {/* Sidebar */}
       <ProjectHistory
         token={token}
         projects={projects}
@@ -259,9 +263,11 @@ const MainPage = ({ token, onLogout }) => {
         onSelectProject={handleSelectProject}
         onNewPrd={handleNewPrd}
         onLogout={onLogout}
+        onProjectRenamed={handleProjectRenamed}
+        onProjectDeleted={handleProjectDeleted}
       />
 
-      {/* Main Content Area */}
+      {/* Main content */}
       <main className="main-content">
         {currentScreen === 'input' ? (
           <>
@@ -269,7 +275,6 @@ const MainPage = ({ token, onLogout }) => {
               <h1 className="main-title">AI Product Requirement Document Generator</h1>
               <p className="main-subtitle">Create structured PRD documents instantly using AI</p>
             </header>
-
             {/* Input Form only */}
             <section className="form-section">
               <ProjectForm 
@@ -326,6 +331,7 @@ const MainPage = ({ token, onLogout }) => {
                       <label htmlFor="editProjectName" className="form-label">Project Name</label>
                       <input
                         id="editProjectName"
+                        name="project_name"
                         type="text"
                         className="form-input"
                         placeholder="e.g. Movie Streaming App"
@@ -545,8 +551,8 @@ const MainPage = ({ token, onLogout }) => {
               {fetchError && <ErrorMessage message={fetchError} />}
 
               {!fetchLoading && selectedProjectSections && (
-                <ResultsDisplay 
-                  sections={selectedProjectSections} 
+                <ResultsDisplay
+                  project={{ project_name: currentProjectName, document: selectedProjectSections }}
                   updatedSections={updatedSections}
                 />
               )}

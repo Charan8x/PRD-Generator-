@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.schemas.schemas import (
     ProjectCreate,
+    ProjectRename,
     ProjectOut,
     ProjectWithDocuments,
     GenerateResponse,
@@ -128,6 +129,46 @@ def get_all_projects(
     return project_service.get_all_projects(db, user_id=current_user["id"])
 
 
+@router.patch("/{project_id}", response_model=ProjectOut)
+def rename_project(
+    project_id: int,
+    data: ProjectRename,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_user_from_token),
+):
+    """
+    Rename an existing project.
+    Only the owner of the project can rename it.
+    """
+    project = project_service.get_project(db, project_id, user_id=current_user["id"])
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Project with id {project_id} not found.",
+        )
+    return project_service.rename_project(db, project, data.project_name)
+
+
+@router.delete("/{project_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_project(
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_user_from_token),
+):
+    """
+    Permanently delete a project and its cascade relations.
+    Only the owner of the project can delete it.
+    """
+    project = project_service.get_project(db, project_id, user_id=current_user["id"])
+    if not project:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Project with id {project_id} not found.",
+        )
+    project_service.delete_project(db, project)
+    return
+
+
 @router.post("/{project_id}/edit", response_model=ProjectEditResponse, status_code=status.HTTP_200_OK)
 def edit_project(
     project_id: int,
@@ -152,13 +193,17 @@ def edit_project(
             detail="Cannot edit a project that has no generated PRD document.",
         )
 
+    target_sec = data.target_section
+    if data.target_sections and not target_sec:
+        target_sec = ", ".join(data.target_sections)
+
     try:
         updated_project, sections = project_service.edit_project_prd(
             db=db,
             project=project,
             new_project_name=data.new_project_name,
             edit_request=data.edit_request,
-            target_section=data.target_section,
+            target_section=target_sec,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -172,4 +217,4 @@ def edit_project(
         project_id=project_id,
         project_name=updated_project.project_name,
         sections=sections,
-    )
+    )

@@ -190,3 +190,34 @@ export async function updateProject(token, id, projectName, description) {
   });
   return handleResponse(response);
 }
+export async function renameProject(token, id, projectName) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      project_name: projectName,
+    }),
+  });
+  return handleResponse(response);
+}
+
+/**
+ * Permanently deletes a project using DELETE /projects/{id}.
+ */
+export async function deleteProject(token, id) {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+  
+  if (response.status === 204) {
+    return null;
+  }
+  return handleResponse(response);
+}
+

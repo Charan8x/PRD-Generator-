@@ -31,7 +31,7 @@ class GeneratedDocument(Base):
     id = Column(Integer, primary_key=True, index=True)
     project_id = Column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, unique=True)
 
-    # Each of the 7 sections gets its own column
+    # Each of the 8 sections gets its own column
     summary = Column(Text, nullable=False)
     features = Column(Text, nullable=False)
     user_stories = Column(Text, nullable=False)

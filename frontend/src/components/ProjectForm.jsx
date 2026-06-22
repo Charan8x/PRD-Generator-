@@ -75,6 +75,7 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
           <label htmlFor="projectName" className="form-label">Project Name</label>
           <input
             id="projectName"
+            name="project_name"
             type="text"
             className="form-input"
             placeholder="e.g. Movie Streaming App"
@@ -91,6 +92,7 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
           <label htmlFor="projectDescription" className="form-label">Project Description</label>
           <textarea
             id="projectDescription"
+            name="project_description"
             className={`form-textarea ${descError ? 'input-error' : ''}`}
             placeholder="Describe your app's core features, target users, and goals..."
             value={projectDescription}

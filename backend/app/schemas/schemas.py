@@ -26,6 +26,18 @@ class ProjectCreate(BaseModel):
         return v
 
 
+class ProjectRename(BaseModel):
+    project_name: str
+
+    @field_validator("project_name")
+    @classmethod
+    def name_must_not_be_empty(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("project_name cannot be empty")
+        return v
+
+
 # ─── Response Schemas ─────────────────────────────────────────────────────────
 
 class DocumentOut(BaseModel):
@@ -72,9 +84,15 @@ class ProjectEditRequest(BaseModel):
     new_project_name: Optional[str] = None
     edit_request: Optional[str] = None
     target_section: Optional[str] = None
+    target_sections: Optional[list[str]] = None
+    # Wait, in the schema from HEAD, target_section was Optional[str].
+    # But in the frontend we saw target_sections is a list/array of strings:
+    # `data.target_sections = selectedSections;`
+    # Let's check how the backend service project_service.edit_project_prd is implemented.
+    # We will view backend/app/services/project_service.py to check what type it expects.
 
 
 class ProjectEditResponse(BaseModel):
     project_id: int
     project_name: str
-    sections: dict[str, str]
+    sections: dict[str, str]

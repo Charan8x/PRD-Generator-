@@ -422,4 +422,213 @@
 
 .flash-highlight {
   animation: flash-highlight-anim 2s ease-out;
-}
+}
+
+/* Sidebar Project Actions Menu & Inline Renaming */
+.project-item {
+  position: relative;
+}
+
+.project-item-button {
+  padding-right: 40px !important; /* Make room for the menu button */
+}
+
+.project-item-menu-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  z-index: 5;
+}
+
+.project-item:hover .project-item-menu-btn,
+.project-item-menu-btn.active {
+  opacity: 1;
+}
+
+.project-item-menu-btn:hover {
+  background-color: rgba(255, 107, 74, 0.15);
+  color: var(--text-primary);
+}
+
+.project-menu-dropdown {
+  position: absolute;
+  right: 8px;
+  top: calc(50% + 14px);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  min-width: 140px;
+  padding: 6px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-family);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  outline: none;
+}
+
+.project-menu-item:hover {
+  background-color: rgba(255, 107, 74, 0.08);
+}
+
+.project-menu-item-icon {
+  font-size: 14px;
+  display: inline-block;
+}
+
+.project-menu-item.delete {
+  color: var(--error);
+}
+
+.project-menu-item.delete:hover {
+  background-color: rgba(229, 72, 77, 0.1);
+  color: var(--error);
+}
+
+/* Inline Rename styling */
+.project-rename-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 8px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+}
+
+.project-rename-input {
+  flex: 1;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  font-size: 13px;
+  outline: none;
+  font-family: var(--font-family);
+  width: 0; /* allows input to shrink to flex width */
+}
+
+.project-rename-input:focus {
+  border-color: var(--accent-coral);
+}
+
+.project-rename-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.project-rename-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius-sm);
+  font-size: 12px;
+  font-weight: bold;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.project-rename-btn.save {
+  color: var(--success-color);
+}
+
+.project-rename-btn.save:hover {
+  background-color: var(--success-bg);
+}
+
+.project-rename-btn.cancel {
+  color: var(--error);
+}
+
+.project-rename-btn.cancel:hover {
+  background-color: rgba(229, 72, 77, 0.1);
+}
+
+/* Custom Sunset Orange styles for Edit Details and Cancel buttons */
+.btn-edit-details {
+  border: 1.5px solid var(--accent-coral) !important;
+  color: var(--accent-coral) !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-edit-details:hover {
+  background-color: var(--accent-coral) !important;
+  color: #1A1208 !important; /* dark text for high contrast on orange */
+}
+
+/* Ensure the SVG icon inside Edit Details inherits the correct color changes */
+.btn-edit-details svg {
+  stroke: currentColor;
+}
+
+.btn-cancel-edit {
+  border: 1.5px solid var(--accent-coral) !important;
+  color: var(--accent-coral) !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-cancel-edit:hover {
+  background-color: rgba(255, 107, 74, 0.1) !important;
+  color: var(--accent-coral) !important;
+}
+
+/* Sidebar Toast message animation */
+.sidebar-toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent-coral);
+  color: #1A1208;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  animation: fade-in-out 2s ease-in-out forwards;
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translate(-50%, 10px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -10px); }
+}
