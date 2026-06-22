@@ -18,7 +18,7 @@
 }
 
 .auth-title {
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
   font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
@@ -183,7 +183,7 @@
 
 /* Header */
 .main-title {
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
   font-size: 28px;
   font-weight: 800;
   color: var(--text-primary);
@@ -220,7 +220,7 @@
   color: var(--accent-coral);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
 }
 
 .project-form {
@@ -282,7 +282,7 @@
   letter-spacing: 0.05em;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
 }
 
 .sections-container {
@@ -332,18 +332,19 @@
   color: var(--accent-coral);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
 }
 
 .section-card-content {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;
+  font-family: 'Tiempo', serif;
 }
 
 .section-card-text {
   white-space: pre-wrap;
-  font-family: var(--font-family);
+  font-family: 'Tiempo', serif;
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;

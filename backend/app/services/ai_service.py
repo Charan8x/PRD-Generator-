@@ -54,7 +54,6 @@ FEATURES
 List all key features of the product. For each feature:
 - Feature Name: Short name.
 - Description: What it does and why it matters.
-- Priority: High / Medium / Low.
 Be specific. Avoid vague descriptions like "user-friendly interface". Aim for at least 6-8 features.
 
 ---
