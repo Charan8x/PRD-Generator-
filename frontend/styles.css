@@ -455,35 +455,136 @@ label {
   overflow: hidden;
 }
 
-/* Sidebar Layout */
-.sidebar {
-  width: var(--sidebar-width);
-  background-color: var(--bg-secondary);
-  border-right: 1px solid var(--border-color);
+/* ============================================================
+   SIDEBAR — Icon Activity Bar + Slide-out History Panel
+   ============================================================ */
+
+/* Outer wrapper: icon bar + panel side by side */
+.sidebar-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   flex-shrink: 0;
 }
 
-.sidebar-header {
-  padding: 24px;
-  border-bottom: 1px solid var(--border-color);
+/* ── Narrow Icon Bar (always visible) ── */
+.sidebar-icon-bar {
+  width: 52px;
+  background-color: var(--bg-secondary);
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  flex-shrink: 0;
+  z-index: 10;
 }
 
+.sidebar-icon-bar-top,
+.sidebar-icon-bar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Individual icon buttons */
+.icon-bar-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+  outline: none;
+  position: relative;
+}
+
+.icon-bar-btn:hover {
+  background-color: rgba(255, 107, 74, 0.1);
+  color: var(--text-primary);
+}
+
+/* Active state (e.g. history panel is open) */
+.icon-bar-btn.active {
+  background-color: rgba(255, 107, 74, 0.15);
+  color: var(--accent-coral);
+}
+
+.icon-bar-btn.active::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--accent-coral);
+  border-radius: 0 3px 3px 0;
+}
+
+/* Logout icon gets a subtle red tint on hover */
+.icon-bar-btn--logout:hover {
+  background-color: rgba(229, 72, 77, 0.1);
+  color: var(--error);
+}
+
+/* ── Slide-out History Panel ── */
+.sidebar-panel {
+  width: 0;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s ease;
+}
+
+.sidebar-panel.open {
+  width: 228px;
+  border-right-color: var(--border-color);
+}
+
+.sidebar-panel-header {
+  padding: 20px 16px 12px 16px;
+  border-bottom: none;
+  flex-shrink: 0;
+}
+
+.sidebar-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-coral);
+  white-space: nowrap;
+}
+
+.sidebar-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 8px;
+}
+
+.sidebar-panel-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+/* legacy aliases kept for project list items */
 .sidebar-content {
   flex: 1;
   overflow-y: auto;
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.sidebar-section {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  padding: 12px 8px;
 }
 
 .sidebar-title {
@@ -535,11 +636,6 @@ label {
   color: var(--text-muted);
 }
 
-/* Sidebar Footer (Sticky Bottom) */
-.sidebar-footer {
-  padding: 16px;
-  border-top: 1px solid var(--border-color);
-}
 
 /* Main Workspace Area */
 .main-content {
