@@ -40,16 +40,16 @@
   padding: 11px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(26, 20, 8, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   outline: none;
-  background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
-  color: #1A1208 !important;
-  box-shadow: 0 4px 20px rgba(255, 107, 74, 0.35);
+  background: var(--accent-color);
+  color: #FFFFFF !important;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-coral) 100%);
-  box-shadow: 0 4px 20px rgba(255, 107, 74, 0.5);
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-primary:disabled {
@@ -129,16 +129,21 @@
   outline: none;
 }
 
-.project-item-button:hover {
-  background-color: var(--bg-card);
-  border-color: var(--border-color);
-  border-left-color: var(--accent-gold);
+.project-item-button:hover,
+.project-item.active .project-item-button {
+  background-color: var(--accent-color) !important;
+  color: #FFFFFF !important;
+  border-color: var(--accent-color) !important;
 }
 
-.project-item.active .project-item-button {
-  background-color: var(--bg-card);
-  border-color: var(--border-color);
-  border-left-color: var(--accent-coral);
+.project-item-button:hover .project-item-name,
+.project-item.active .project-item-button .project-item-name {
+  color: #FFFFFF !important;
+}
+
+.project-item-button:hover .project-item-date,
+.project-item.active .project-item-button .project-item-date {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .project-item-name {
@@ -171,14 +176,15 @@
   cursor: pointer;
   transition: all 0.2s ease;
   background-color: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
   outline: none;
 }
 
 .logout-button:hover {
-  background-color: var(--bg-card);
-  border-color: var(--accent-coral);
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #FFFFFF;
 }
 
 /* Header */
@@ -200,24 +206,19 @@
 .project-form-container {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.project-form-container:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-title {
   font-size: 14px;
   font-weight: 700;
-  color: var(--accent-coral);
+  color: var(--accent-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: 'Outfit', var(--font-family);
@@ -232,7 +233,7 @@
 .form-textarea {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-sm);
   color: var(--text-primary);
   padding: 12px;
   font-size: 14px;
@@ -245,7 +246,7 @@
 }
 
 .form-textarea:focus {
-  border-color: var(--accent-coral);
+  border-color: var(--border-focus);
   box-shadow: 0 0 0 3px var(--input-glow);
 }
 
@@ -277,7 +278,7 @@
 .results-title {
   font-size: 16px;
   font-weight: 700;
-  color: var(--accent-coral);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding-bottom: 8px;
@@ -295,22 +296,13 @@
 .section-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid transparent;
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.section-card:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.section-card:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
 }
 
 .section-card:hover {
@@ -318,18 +310,10 @@
   box-shadow: var(--shadow-md);
 }
 
-.section-card:hover:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.section-card:hover:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
-
 .section-card-title {
   font-size: 14px;
-  font-weight: 700;
-  color: var(--accent-coral);
+  font-weight: 600;
+  color: var(--accent-color);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: 'Outfit', var(--font-family);
@@ -372,7 +356,6 @@
   padding: 24px;
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   color: var(--text-secondary);
   font-size: 14px;
@@ -443,7 +426,7 @@
 }
 
 .project-item-menu-btn:hover {
-  background-color: rgba(255, 107, 74, 0.15);
+  background-color: rgba(165, 139, 113, 0.15);
   color: var(--text-primary);
 }
 
@@ -480,7 +463,7 @@
 }
 
 .project-menu-item:hover {
-  background-color: rgba(255, 107, 74, 0.08);
+  background-color: rgba(165, 139, 113, 0.08);
 }
 
 .project-menu-item-icon {
@@ -523,7 +506,7 @@
 }
 
 .project-rename-input:focus {
-  border-color: var(--accent-coral);
+  border-color: var(--border-focus);
 }
 
 .project-rename-actions {
@@ -564,15 +547,15 @@
 
 /* Custom Sunset Orange styles for Edit Details and Cancel buttons */
 .btn-edit-details {
-  border: 1.5px solid var(--accent-coral) !important;
-  color: var(--accent-coral) !important;
+  border: 1.5px solid var(--accent-color) !important;
+  color: var(--accent-color) !important;
   background-color: transparent !important;
   transition: all 0.2s ease-in-out;
 }
 
 .btn-edit-details:hover {
-  background-color: var(--accent-coral) !important;
-  color: #1A1208 !important; /* dark text for high contrast on orange */
+  background-color: var(--accent-color) !important;
+  color: #FFFFFF !important;
 }
 
 /* Ensure the SVG icon inside Edit Details inherits the correct color changes */
@@ -581,15 +564,15 @@
 }
 
 .btn-cancel-edit {
-  border: 1.5px solid var(--accent-coral) !important;
-  color: var(--accent-coral) !important;
+  border: 1.5px solid var(--accent-color) !important;
+  color: var(--accent-color) !important;
   background-color: transparent !important;
   transition: all 0.2s ease-in-out;
 }
 
 .btn-cancel-edit:hover {
-  background-color: rgba(255, 107, 74, 0.1) !important;
-  color: var(--accent-coral) !important;
+  background-color: rgba(165, 139, 113, 0.1) !important;
+  color: var(--accent-color) !important;
 }
 
 /* Sidebar Toast message animation */
@@ -598,8 +581,8 @@
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-coral);
-  color: #1A1208;
+  background-color: var(--accent-color);
+  color: #FFFFFF;
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 12px;

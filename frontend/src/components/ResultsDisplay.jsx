@@ -13,6 +13,7 @@ const SECTIONS = [
 
 const ResultsDisplay = ({ project }) => {
   const [downloading, setDownloading] = useState(false)
+  const [downloadHovered, setDownloadHovered] = useState(false)
 
   if (!project?.document) return null
 
@@ -117,19 +118,21 @@ const ResultsDisplay = ({ project }) => {
         <button
           onClick={handleDownload}
           disabled={downloading}
+          onMouseEnter={() => setDownloadHovered(true)}
+          onMouseLeave={() => setDownloadHovered(false)}
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
             padding: '10px 20px',
-            background: downloading ? '#888' : 'linear-gradient(to right, #f97316, #fb923c)',
+            background: downloading ? '#888' : (downloadHovered ? '#8C7460' : '#A58B71'),
             color: '#fff',
             border: 'none',
             borderRadius: '8px',
             fontSize: '14px',
             fontWeight: '600',
             cursor: downloading ? 'not-allowed' : 'pointer',
-            transition: 'opacity 0.2s',
+            transition: 'background-color 0.2s, opacity 0.2s',
             opacity: downloading ? 0.6 : 1,
           }}
         >

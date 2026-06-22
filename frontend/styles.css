@@ -4,29 +4,29 @@
 @font-face {
   font-family: 'Tiempo';
   src: url('./src/assets/fonts/Tiempo-Regular.woff2') format('woff2'),
-       url('./src/assets/fonts/Tiempo-Regular.woff') format('woff');
+    url('./src/assets/fonts/Tiempo-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
-/* Custom Tiempo font family for user-typed content in Project Name/Description */
+/* Ensure inputs and placeholders use the standard sans-serif font */
 input[name="project_name"],
-textarea[name="project_description"] {
-  font-family: 'Tiempo', serif;
-}
-
+textarea[name="project_description"],
 input[name="project_name"]::placeholder,
 textarea[name="project_description"]::placeholder {
   font-family: var(--font-family);
 }
 
 :root {
-  --border-radius-lg: 12px;    /* Large radius for cards */
-  --border-radius-md: 8px;     /* Medium radius for buttons/inputs */
-  --border-radius-sm: 6px;     /* Small radius for badges/inline items */
+  --border-radius-lg: 12px;
+  /* Large radius for cards */
+  --border-radius-md: 8px;
+  /* Medium radius for buttons/inputs */
+  --border-radius-sm: 6px;
+  /* Small radius for badges/inline items */
   --sidebar-width: 280px;
-  
+
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
@@ -34,42 +34,52 @@ textarea[name="project_description"]::placeholder {
   --bg-primary: var(--bg-main);
   --bg-secondary: var(--bg-sidebar);
   --bg-input: var(--bg-main);
-  
-  --border-color: rgba(255, 107, 74, 0.15); /* low-opacity accent-coral hairline border */
+
+  --border-color: rgba(255, 107, 74, 0.15);
+  /* low-opacity accent-coral hairline border */
   --border-focus: var(--accent-coral);
-  
+
   --text-muted: var(--text-secondary);
-  
+
   /* Sunset Tech Accents */
   --accent-color: var(--accent-coral);
   --accent-hover: var(--accent-gold);
   --accent-bg-subtle: rgba(255, 107, 74, 0.08);
   --accent-rgb: 255, 107, 74;
-  
+
   /* Status Colors */
   --danger-color: var(--error);
-  
-  --success-color: #059669;    /* Emerald-600 */
+
+  --success-color: #059669;
+  /* Emerald-600 */
   --success-bg: rgba(5, 150, 105, 0.05);
   --success-border: rgba(5, 150, 105, 0.1);
 }
 
 :root[data-theme="dark"] {
   /* Sunset Tech Dark colors */
-  --bg-main: #0D1117;        /* main page background, deep blue-black */
-  --bg-sidebar: #161B22;     /* sidebar background, slightly lighter blue-grey */
-  --bg-card: #1F2530;        /* cards, form containers, generated output sections */
-  --accent-coral: #FF6B4A;   /* primary accent — headings, borders, active states */
-  --accent-gold: #FFC857;    /* secondary accent — alternating highlights, hover states */
-  --text-primary: #F0F2F5;   /* main body text, off-white */
-  --text-secondary: #8B949E; /* muted slate labels */
-  --error: #E5484D;          /* error messages, invalid states */
+  --bg-main: #0D1117;
+  /* main page background, deep blue-black */
+  --bg-sidebar: #161B22;
+  /* sidebar background, slightly lighter blue-grey */
+  --bg-card: #1F2530;
+  /* cards, form containers, generated output sections */
+  --accent-coral: #FF6B4A;
+  /* primary accent — headings, borders, active states */
+  --accent-gold: #FFC857;
+  /* secondary accent — alternating highlights, hover states */
+  --text-primary: #F0F2F5;
+  /* main body text, off-white */
+  --text-secondary: #8B949E;
+  /* muted slate labels */
+  --error: #E5484D;
+  /* error messages, invalid states */
 
   /* Shadows - softened for dark background */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-  
+
   --shadow-glow: rgba(255, 107, 74, 0.35);
   --shadow-glow-hover: rgba(255, 107, 74, 0.5);
   --input-glow: rgba(255, 107, 74, 0.2);
@@ -80,14 +90,22 @@ textarea[name="project_description"]::placeholder {
 
 :root[data-theme="light"] {
   /* Sunset Tech Light colors */
-  --bg-main: #F6F8FA;        /* main page background, very soft off-white/light blue-grey */
-  --bg-sidebar: #FFFFFF;     /* sidebar background, pure white */
-  --bg-card: #FFFFFF;        /* cards, form containers, generated output sections */
-  --accent-coral: #E55B3C;   /* primary accent - slightly darker coral for light bg contrast */
-  --accent-gold: #D97706;    /* secondary accent - darker gold/amber for readability */
-  --text-primary: #1A1D20;   /* main body text, dark charcoal */
-  --text-secondary: #57606A; /* muted slate grey labels */
-  --error: #CF222E;          /* light-red error */
+  --bg-main: #F6F8FA;
+  /* main page background, very soft off-white/light blue-grey */
+  --bg-sidebar: #FFFFFF;
+  /* sidebar background, pure white */
+  --bg-card: #FFFFFF;
+  /* cards, form containers, generated output sections */
+  --accent-coral: #E55B3C;
+  /* primary accent - slightly darker coral for light bg contrast */
+  --accent-gold: #D97706;
+  /* secondary accent - darker gold/amber for readability */
+  --text-primary: #1A1D20;
+  /* main body text, dark charcoal */
+  --text-secondary: #57606A;
+  /* muted slate grey labels */
+  --error: #CF222E;
+  /* light-red error */
 
   /* Shadows - standard light background shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -119,8 +137,47 @@ body {
   overflow-x: hidden;
 }
 
+/* Page headings and generated PRD contents font */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.main-title,
+.form-title,
+.prd-card-content,
+.prd-card-content p,
+.prd-card-content li {
+  font-family: 'Tiempo', serif;
+}
+
 /* Smooth transitions for theme-affected elements */
-body, .auth-container, .auth-page-container, .dashboard-container, .main-page-container, .sidebar, .content-card, .prd-card, .project-form-container, .section-card, .form-input, .dashboard-input, .form-textarea, button, a, h1, h2, h3, h4, h5, h6, p, span, li, label {
+body,
+.auth-container,
+.auth-page-container,
+.dashboard-container,
+.main-page-container,
+.sidebar,
+.content-card,
+.prd-card,
+.project-form-container,
+.section-card,
+.form-input,
+.dashboard-input,
+.form-textarea,
+button,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+li,
+label {
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -174,7 +231,7 @@ body, .auth-container, .auth-page-container, .dashboard-container, .main-page-co
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Outfit', var(--font-family);
+  font-family: var(--font-family);
   font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
@@ -245,8 +302,8 @@ body, .auth-container, .auth-page-container, .dashboard-container, .main-page-co
 }
 
 /* Link radio inputs selection behavior */
-#tab-login-radio:checked ~ .tab-buttons label[for="tab-login-radio"],
-#tab-signup-radio:checked ~ .tab-buttons label[for="tab-signup-radio"] {
+#tab-login-radio:checked~.tab-buttons label[for="tab-login-radio"],
+#tab-signup-radio:checked~.tab-buttons label[for="tab-signup-radio"] {
   color: var(--text-primary);
   border-bottom-color: var(--accent-color);
 }
@@ -256,8 +313,8 @@ body, .auth-container, .auth-page-container, .dashboard-container, .main-page-co
   display: none;
 }
 
-#tab-login-radio:checked ~ #login-form-wrapper,
-#tab-signup-radio:checked ~ #signup-form-wrapper {
+#tab-login-radio:checked~#login-form-wrapper,
+#tab-signup-radio:checked~#signup-form-wrapper {
   display: block;
 }
 
@@ -372,14 +429,17 @@ body, .auth-container, .auth-page-container, .dashboard-container, .main-page-co
   outline: none;
 }
 
-.btn-primary, .btn-accent {
+.btn-primary,
+.btn-accent {
   background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
-  color: #1A1208 !important; /* dark text for contrast */
+  color: #1A1208 !important;
+  /* dark text for contrast */
   border: 1px solid rgba(26, 20, 8, 0.1);
   box-shadow: 0 4px 20px var(--shadow-glow);
 }
 
-.btn-primary:hover, .btn-accent:hover {
+.btn-primary:hover,
+.btn-accent:hover {
   background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-coral) 100%);
   box-shadow: 0 4px 20px var(--shadow-glow-hover);
 }
@@ -606,7 +666,9 @@ textarea.dashboard-input {
 }
 
 @keyframes loading-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Result Section & Stacked Cards */
@@ -624,7 +686,7 @@ textarea.dashboard-input {
   letter-spacing: 0.05em;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
 }
 
 .prd-card {
@@ -673,7 +735,7 @@ textarea.dashboard-input {
   color: var(--accent-coral);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Outfit', var(--font-family);
+  font-family: 'Tiempo', serif;
   margin: 0;
 }
 
@@ -703,7 +765,7 @@ textarea.dashboard-input {
   margin-bottom: 0;
 }
 
-.prd-card-content ul, 
+.prd-card-content ul,
 .prd-card-content ol {
   margin-left: 20px;
   margin-bottom: 16px;
@@ -746,15 +808,18 @@ textarea.dashboard-input {
   .dashboard-container {
     flex-direction: column;
   }
+
   .sidebar {
     width: 100%;
     height: auto;
     border-right: none;
     border-bottom: 1px solid var(--border-color);
   }
+
   .sidebar-content {
     max-height: 200px;
   }
+
   .main-content {
     padding: 24px;
   }
