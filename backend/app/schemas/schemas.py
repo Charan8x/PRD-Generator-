@@ -78,4 +78,17 @@ class ProjectWithDocuments(BaseModel):
 
 class GenerateResponse(BaseModel):
     project_id: int
+    sections: dict[str, str]  # section_name -> content, for frontend convenience
+
+
+class ProjectEditRequest(BaseModel):
+    new_project_name: Optional[str] = None
+    edit_request: Optional[str] = None
+    target_section: Optional[str] = None
+    target_sections: Optional[list[str]] = None
+
+
+class ProjectEditResponse(BaseModel):
+    project_id: int
+    project_name: str
     sections: dict[str, str]

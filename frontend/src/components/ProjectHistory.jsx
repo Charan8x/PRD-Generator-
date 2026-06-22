@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getProjects, logout, renameProject, deleteProject } from '../api/client';
+import { logout, renameProject, deleteProject } from '../api/client';
 import ErrorMessage from './ErrorMessage';
 
 /**
@@ -9,6 +9,9 @@ import ErrorMessage from './ErrorMessage';
  * 
  * Props:
  * @param {string} token - The authenticated user's JWT token.
+ * @param {Array} projects - Array of project objects.
+ * @param {boolean} loading - Loading state for projects.
+ * @param {string} error - Error message if any.
  * @param {number|null} selectedProjectId - The currently selected project ID.
  * @param {function} onSelectProject - Callback when a project is clicked.
  * @param {function} onNewPrd - Callback when new PRD is clicked.
@@ -18,56 +21,21 @@ import ErrorMessage from './ErrorMessage';
  */
 const ProjectHistory = ({
   token,
+  projects = [],
+  loading = false,
+  error = '',
   selectedProjectId,
-  refreshTrigger,
   onSelectProject,
   onNewPrd,
   onLogout,
   onProjectRenamed = () => {},
   onProjectDeleted = () => {}
 }) => {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  
   // Sidebar actions UI states
   const [openMenuId, setOpenMenuId] = useState(null);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [renameValue, setRenameValue] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-
-  // Fetch projects list on mount or when token changes
-  useEffect(() => {
-    let isMounted = true;
-    
-    const fetchProjects = async () => {
-      if (!token) return;
-      setLoading(true);
-      setError('');
-      try {
-        const data = await getProjects(token);
-        if (isMounted) {
-          // Sort projects newest to oldest just in case backend order varies
-          const sorted = [...data].sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
-          setProjects(sorted);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err.message || 'Failed to load project history.');
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchProjects();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [token, refreshTrigger]);
 
   // Close the dropdown when clicking outside
   useEffect(() => {
@@ -115,11 +83,10 @@ const ProjectHistory = ({
 
     try {
       await renameProject(token, projectId, trimmed);
-      setProjects(prev => prev.map(p => p.id === projectId ? { ...p, project_name: trimmed } : p));
       setEditingProjectId(null);
       onProjectRenamed(projectId, trimmed);
     } catch (err) {
-      setError(err.message || 'Failed to rename project.');
+      alert(err.message || 'Failed to rename project.');
     }
   };
 
@@ -161,10 +128,9 @@ const ProjectHistory = ({
 
     try {
       await deleteProject(token, projectId);
-      setProjects(prev => prev.filter(p => p.id !== projectId));
       onProjectDeleted(projectId);
     } catch (err) {
-      setError(err.message || 'Failed to delete project.');
+      alert(err.message || 'Failed to delete project.');
     }
   };
 
@@ -256,7 +222,7 @@ const ProjectHistory = ({
                       
                       <button
                         type="button"
-                        className={`project-item-menu-btn ${isMenuOpenThis ? 'active' : ''}`}
+                        className="project-item-menu-btn"
                         onClick={(e) => handleMenuToggle(e, project.id)}
                         title="Project options"
                       >
@@ -300,8 +266,9 @@ const ProjectHistory = ({
       <div className="sidebar-footer">
         <button
           type="button"
-          className="logout-button"
+          className="btn-primary"
           onClick={handleLogoutClick}
+          style={{ width: '100%', padding: '8px 12px', fontSize: '13px' }}
         >
           Logout
         </button>
