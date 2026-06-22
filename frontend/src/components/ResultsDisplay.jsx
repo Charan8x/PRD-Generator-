@@ -78,17 +78,33 @@ const ResultsDisplay = ({ project, updatedSections = [] }) => {
 
   return (
     <div style={{ marginTop: '24px' }}>
-      {/* PRD Header & Download Button Row */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
-            Generated Product Requirement Document (PRD)
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '6px', margin: 0 }}>
-            {project.project_name}
-          </p>
-        </div>
-        
+      {/* PRD Header Row */}
+      <div style={{ marginBottom: '24px' }}>
+        <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+          Generated Product Requirement Document (PRD)
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '6px', margin: 0 }}>
+          {project.project_name}
+        </p>
+      </div>
+
+      {/* Sections Container using SectionCard */}
+      <div className="sections-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {SECTIONS.map((sec) => {
+          const content = doc[sec.key];
+          return (
+            <SectionCard 
+              key={sec.key} 
+              title={sec.title} 
+              content={content} 
+              isUpdated={updatedSections.includes(sec.key)}
+            />
+          );
+        })}
+      </div>
+
+      {/* Download Button Row at the bottom */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
         <button
           onClick={handleDownload}
           disabled={downloading}
@@ -120,21 +136,6 @@ const ResultsDisplay = ({ project, updatedSections = [] }) => {
             </>
           )}
         </button>
-      </div>
-
-      {/* Sections Container using SectionCard */}
-      <div className="sections-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {SECTIONS.map((sec) => {
-          const content = doc[sec.key];
-          return (
-            <SectionCard 
-              key={sec.key} 
-              title={sec.title} 
-              content={content} 
-              isUpdated={updatedSections.includes(sec.key)}
-            />
-          );
-        })}
       </div>
     </div>
   )
