@@ -35,15 +35,6 @@ def get_all_projects(db: Session, user_id: str) -> list[Project]:
     )
 
 
-def update_project(db: Session, project: Project, data: ProjectCreate) -> Project:
-    """Update name and description of an existing project."""
-    project.project_name = data.project_name.strip()
-    project.description = data.description.strip()
-    db.commit()
-    db.refresh(project)
-    return project
-
-
 def save_documents(db: Session, project_id: int, sections: dict[str, str]) -> None:
     """
     Save all 8 sections as a single GeneratedDocument row.
