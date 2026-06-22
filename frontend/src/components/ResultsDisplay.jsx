@@ -6,10 +6,11 @@ const SECTIONS = [
   { key: 'summary', title: '1. Project Summary' },
   { key: 'features', title: '2. Features' },
   { key: 'user_stories', title: '3. User Stories' },
-  { key: 'db_design', title: '4. Database Design' },
-  { key: 'apis', title: '5. API Suggestions' },
-  { key: 'test_cases', title: '6. Test Cases' },
-  { key: 'dev_plan', title: '7. Development Plan' }
+  { key: 'techstack', title: '4. Tech Stack' },
+  { key: 'db_design', title: '5. Database Design' },
+  { key: 'apis', title: '6. API Suggestions' },
+  { key: 'test_cases', title: '7. Test Cases' },
+  { key: 'dev_plan', title: '8. Development Plan' }
 ]
 
 const ResultsDisplay = ({ project, updatedSections = [] }) => {
@@ -101,6 +102,8 @@ const ResultsDisplay = ({ project, updatedSections = [] }) => {
             fontSize: '14px',
             fontWeight: '600',
             cursor: downloading ? 'not-allowed' : 'pointer',
+            opacity: downloading ? 0.6 : 1,
+            transition: 'opacity 0.2s',
           }}
         >
           {downloading ? (

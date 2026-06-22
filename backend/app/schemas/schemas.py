@@ -46,6 +46,7 @@ class DocumentOut(BaseModel):
     summary: str
     features: str
     user_stories: str
+    techstack: str
     db_design: str
     apis: str
     test_cases: str
@@ -70,7 +71,7 @@ class ProjectWithDocuments(BaseModel):
     project_name: str
     description: str
     created_date: datetime
-    document: Optional[DocumentOut] = None  # None if generation hasn't run yet
+    document: Optional[DocumentOut] = None
 
     model_config = {"from_attributes": True}
 
@@ -85,11 +86,6 @@ class ProjectEditRequest(BaseModel):
     edit_request: Optional[str] = None
     target_section: Optional[str] = None
     target_sections: Optional[list[str]] = None
-    # Wait, in the schema from HEAD, target_section was Optional[str].
-    # But in the frontend we saw target_sections is a list/array of strings:
-    # `data.target_sections = selectedSections;`
-    # Let's check how the backend service project_service.edit_project_prd is implemented.
-    # We will view backend/app/services/project_service.py to check what type it expects.
 
 
 class ProjectEditResponse(BaseModel):

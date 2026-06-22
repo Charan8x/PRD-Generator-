@@ -1,12 +1,15 @@
 from groq import Groq
 from app.config import settings
+import traceback
 
 client = Groq(api_key=settings.GROQ_API_KEY)
 
+# 8 section keys — order matters for the DOCX output
 SECTION_KEYS = [
     "summary",
     "features",
     "user_stories",
+    "techstack",
     "db_design",
     "apis",
     "test_cases",
@@ -17,6 +20,7 @@ SECTION_LABELS: dict[str, str] = {
     "summary":      "PROJECT SUMMARY",
     "features":     "FEATURES",
     "user_stories": "USER STORIES",
+    "techstack":    "TECH STACK",
     "db_design":    "DATABASE DESIGN",
     "apis":         "API SUGGESTIONS",
     "test_cases":   "TEST CASES",
@@ -32,7 +36,7 @@ def build_prompt(project_name: str, description: str) -> str:
 Project Name: {project_name}
 Project Description: {description}
 
-Generate a complete, production-grade PRD strictly following this schema for ALL seven sections.
+Generate a complete, production-grade PRD strictly following this schema for ALL eight sections.
 
 ---
 
@@ -62,6 +66,12 @@ Acceptance Criteria:
   - [specific testable condition 1]
   - [specific testable condition 2]
 Write at least 6 user stories covering the core flows of the product.
+
+---
+
+TECH STACK
+List all the key technologies, libraries, and frameworks that will be used for this project.
+Be specific. E.g., Frontend (React, Vite, CSS variables), Backend (FastAPI, SQLAlchemy, Uvicorn, PostgreSQL), and details about hosting, version control, etc.
 
 ---
 
@@ -112,7 +122,7 @@ STRICT RULES:
 - Every section must have detailed, specific, measurable content.
 - Do not use markdown symbols like **, ##, or *. Use plain text only.
 - Do not skip any section.
-- Do not add extra sections beyond the seven listed.
+- Do not add extra sections beyond the eight listed.
 """
 
 
@@ -143,7 +153,7 @@ def generate_prd(project_name: str, description: str) -> dict[str, str]:
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             max_tokens=4096,
             messages=[
                 {"role": "user", "content": prompt}
@@ -151,16 +161,22 @@ def generate_prd(project_name: str, description: str) -> dict[str, str]:
         )
     except Exception as e:
         import sys
-        print(f"Primary model llama-3.3-70b-versatile failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
-        response = client.chat.completions.create(
-            model="qwen/qwen3.6-27b",
-            max_tokens=4096,
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-        )
+        print(f"Primary model openai/gpt-oss-120b failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
+        try:
+            response = client.chat.completions.create(
+                model="qwen/qwen3.6-27b",
+                max_tokens=4096,
+                messages=[
+                    {"role": "user", "content": prompt}
+                ],
+            )
+        except Exception:
+            print(f"\n[AI SERVICE ERROR] Groq API call failed:")
+            print(traceback.format_exc())
+            raise Exception(f"Groq API error: {str(e)}")
 
     raw_text: str = response.choices[0].message.content
+    print(f"\n[AI SERVICE] Raw response preview:\n{raw_text[:300]}\n")
     sections = parse_sections(raw_text)
 
     missing = [key for key in SECTION_KEYS if key not in sections or not sections[key].strip()]
@@ -174,6 +190,8 @@ EDIT_LABEL_TO_KEY = {
     "SUMMARY:": "summary",
     "FEATURES:": "features",
     "USER_STORIES:": "user_stories",
+    "TECH_STACK:": "techstack",
+    "TECHSTACK:": "techstack",
     "DB_DESIGN:": "db_design",
     "APIS:": "apis",
     "TEST_CASES:": "test_cases",
@@ -215,6 +233,7 @@ def generate_edit_prd(
         "summary": "Current Project Summary",
         "features": "Current Features",
         "user_stories": "Current User Stories",
+        "techstack": "Current Tech Stack",
         "db_design": "Current Database Design",
         "apis": "Current API Suggestions",
         "test_cases": "Current Test Cases",
@@ -243,13 +262,13 @@ User's Edit Request: {edit_request}
         "request clearly requires changes across multiple sections (for example, a new "
         "feature that needs a corresponding user story and API entry). Return only the "
         "changed section(s), each labeled exactly as: SUMMARY:, FEATURES:, "
-        "USER_STORIES:, DB_DESIGN:, APIS:, TEST_CASES:, DEVELOPMENT_PLAN:. Do not add "
-        "commentary outside these labels."
+        "USER_STORIES:, TECH_STACK:, DB_DESIGN:, APIS:, TEST_CASES:, DEVELOPMENT_PLAN:. "
+        "Do not add commentary outside these labels."
     )
 
     try:
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             max_tokens=4096,
             messages=[
                 {"role": "system", "content": system_message},
@@ -258,16 +277,20 @@ User's Edit Request: {edit_request}
         )
     except Exception as e:
         import sys
-        print(f"Primary model llama-3.3-70b-versatile failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
-        response = client.chat.completions.create(
-            model="qwen/qwen3.6-27b",
-            max_tokens=4096,
-            messages=[
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": user_prompt}
-            ],
-        )
+        print(f"Primary model openai/gpt-oss-120b failed: {e}. Trying fallback model qwen/qwen3.6-27b...", file=sys.stderr)
+        try:
+            response = client.chat.completions.create(
+                model="qwen/qwen3.6-27b",
+                max_tokens=4096,
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_prompt}
+                ],
+            )
+        except Exception:
+            print(f"\n[AI SERVICE ERROR] Groq API call failed:")
+            print(traceback.format_exc())
+            raise Exception(f"Groq API error: {str(e)}")
 
     raw_text: str = response.choices[0].message.content
     return parse_edit_response(raw_text)
-
