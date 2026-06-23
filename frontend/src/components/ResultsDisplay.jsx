@@ -13,7 +13,7 @@ const SECTIONS = [
   { key: 'dev_plan', title: '8. Development Plan' }
 ]
 
-const ResultsDisplay = ({ project, updatedSections = [] }) => {
+const ResultsDisplay = ({ project, updatedSections = [], isEditing, onStartEdit }) => {
   const [downloading, setDownloading] = useState(false)
 
   if (!project?.document) return null
@@ -78,17 +78,43 @@ const ResultsDisplay = ({ project, updatedSections = [] }) => {
 
   return (
     <div style={{ marginTop: '24px' }}>
-      {/* PRD Header & Download Button Row */}
+      {/* PRD Header Row with Edit Option */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
-            Generated Product Requirement Document (PRD)
-          </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginTop: '6px', margin: 0 }}>
-            {project.project_name}
-          </p>
-        </div>
-        
+        <h1 style={{ fontSize: '26px', fontWeight: '700', color: 'var(--text-primary)', margin: 0 }}>
+          {project.project_name}
+        </h1>
+        {!isEditing && (
+          <button
+            type="button"
+            className="btn-primary"
+            style={{ width: 'auto', padding: '6px 12px', fontSize: '12px', marginLeft: '16px', flexShrink: 0 }}
+            onClick={onStartEdit}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{ marginRight: '6px' }}>
+              <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+            </svg>
+            Edit PRD
+          </button>
+        )}
+      </div>
+
+      {/* Sections Container using SectionCard */}
+      <div className="sections-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {SECTIONS.map((sec) => {
+          const content = doc[sec.key];
+          return (
+            <SectionCard
+              key={sec.key}
+              title={sec.title}
+              content={content}
+              isUpdated={updatedSections.includes(sec.key)}
+            />
+          );
+        })}
+      </div>
+
+      {/* Download Button Row at the bottom */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
         <button
           onClick={handleDownload}
           disabled={downloading}
@@ -120,21 +146,6 @@ const ResultsDisplay = ({ project, updatedSections = [] }) => {
             </>
           )}
         </button>
-      </div>
-
-      {/* Sections Container using SectionCard */}
-      <div className="sections-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {SECTIONS.map((sec) => {
-          const content = doc[sec.key];
-          return (
-            <SectionCard 
-              key={sec.key} 
-              title={sec.title} 
-              content={content} 
-              isUpdated={updatedSections.includes(sec.key)}
-            />
-          );
-        })}
       </div>
     </div>
   )

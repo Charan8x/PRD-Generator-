@@ -10,12 +10,9 @@
   font-display: swap;
 }
 
-/* Custom Tiempo font family for user-typed content in Project Name/Description */
+/* Ensure inputs and placeholders use the standard sans-serif font */
 input[name="project_name"],
-textarea[name="project_description"] {
-  font-family: 'Tiempo', serif;
-}
-
+textarea[name="project_description"],
 input[name="project_name"]::placeholder,
 textarea[name="project_description"]::placeholder {
   font-family: var(--font-family);
@@ -38,8 +35,8 @@ textarea[name="project_description"]::placeholder {
   --bg-secondary: var(--bg-sidebar);
   --bg-input: var(--bg-main);
 
-  --border-color: rgba(255, 107, 74, 0.15);
-  /* low-opacity accent-coral hairline border */
+  --border-color: rgba(var(--accent-rgb), 0.15);
+  /* low-opacity accent hairline border */
   --border-focus: var(--accent-coral);
 
   --text-muted: var(--text-secondary);
@@ -47,8 +44,7 @@ textarea[name="project_description"]::placeholder {
   /* Sunset Tech Accents */
   --accent-color: var(--accent-coral);
   --accent-hover: var(--accent-gold);
-  --accent-bg-subtle: rgba(255, 107, 74, 0.08);
-  --accent-rgb: 255, 107, 74;
+  --accent-bg-subtle: rgba(var(--accent-rgb), 0.08);
 
   /* Status Colors */
   --danger-color: var(--error);
@@ -60,67 +56,79 @@ textarea[name="project_description"]::placeholder {
 }
 
 :root[data-theme="dark"] {
-  /* Sunset Tech Dark colors */
-  --bg-main: #0D1117;
-  /* main page background, deep blue-black */
-  --bg-sidebar: #161B22;
-  /* sidebar background, slightly lighter blue-grey */
-  --bg-card: #1F2530;
-  /* cards, form containers, generated output sections */
-  --accent-coral: #FF6B4A;
-  /* primary accent — headings, borders, active states */
-  --accent-gold: #FFC857;
-  /* secondary accent — alternating highlights, hover states */
-  --text-primary: #F0F2F5;
-  /* main body text, off-white */
-  --text-secondary: #8B949E;
-  /* muted slate labels */
-  --error: #E5484D;
-  /* error messages, invalid states */
+  /* Minimalist Dark Sage/Espresso theme */
+  --bg-main: #1E201E;
+  /* dark charcoal sage background */
+  --bg-sidebar: #2B2D2A;
+  /* dark sage sidebar */
+  --bg-card: #2B2D2A;
+  /* dark sage cards */
+  --bg-input: #1A1B19;
+  /* dark input background */
+  --accent-coral: #AFB2A9;
+  /* primary accent - Ashwood (soft sage-gray) */
+  --accent-gold: #B6B9B2;
+  /* secondary accent - Dusk (medium-light sage-gray) */
+  --accent-rgb: 175, 178, 169;
+  /* Ashwood RGB */
+  --text-primary: #E1E3DF;
+  /* main body text - soft warm white-gray */
+  --text-secondary: #B6B9B2;
+  /* muted dusk labels */
+  --btn-text: #1E201E;
+  /* dark text on light buttons */
+  --error: #F16A60;
+  /* soft warm red */
 
   /* Shadows - softened for dark background */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 
-  --shadow-glow: rgba(255, 107, 74, 0.35);
-  --shadow-glow-hover: rgba(255, 107, 74, 0.5);
-  --input-glow: rgba(255, 107, 74, 0.2);
+  --shadow-glow: rgba(var(--accent-rgb), 0.05);
+  --shadow-glow-hover: rgba(var(--accent-rgb), 0.12);
+  --input-glow: rgba(var(--accent-rgb), 0.05);
 
-  --danger-bg: rgba(229, 72, 77, 0.05);
-  --danger-border: rgba(229, 72, 77, 0.15);
+  --danger-bg: rgba(241, 106, 96, 0.05);
+  --danger-border: rgba(241, 106, 96, 0.15);
 }
 
 :root[data-theme="light"] {
-  /* Sunset Tech Light colors */
-  --bg-main: #F6F8FA;
-  /* main page background, very soft off-white/light blue-grey */
-  --bg-sidebar: #FFFFFF;
-  /* sidebar background, pure white */
+  /* Minimalist Warm Ashwood Sage theme based on color palette */
+  --bg-main: #EAEBE7;
+  /* main page background - soft ashwood-tinted off-white/beige */
+  --bg-sidebar: #F5F6F4;
+  /* sidebar background - clean, very light sage */
   --bg-card: #FFFFFF;
-  /* cards, form containers, generated output sections */
-  --accent-coral: #E55B3C;
-  /* primary accent - slightly darker coral for light bg contrast */
-  --accent-gold: #D97706;
-  /* secondary accent - darker gold/amber for readability */
-  --text-primary: #1A1D20;
-  /* main body text, dark charcoal */
-  --text-secondary: #57606A;
-  /* muted slate grey labels */
-  --error: #CF222E;
-  /* light-red error */
+  /* cards, form containers, generated output sections - pure white */
+  --bg-input: #FFFFFF;
+  /* input background */
+  --accent-coral: #7B7F77;
+  /* primary accent - Pebble (dark sage-gray) */
+  --accent-gold: #8A8E85;
+  /* secondary accent - Clay (medium-dark sage-gray) */
+  --accent-rgb: 123, 127, 119;
+  /* Pebble RGB */
+  --text-primary: #3A3D38;
+  /* main body text - dark charcoal sage */
+  --text-secondary: #7B7F77;
+  /* muted pebble labels */
+  --btn-text: #FFFFFF;
+  /* white text on dark buttons */
+  --error: #962822;
+  /* brick red */
 
   /* Shadows - standard light background shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 2px 0 rgba(123, 127, 119, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(123, 127, 119, 0.05), 0 2px 4px -1px rgba(123, 127, 119, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(123, 127, 119, 0.04), 0 4px 6px -2px rgba(123, 127, 119, 0.02);
 
-  --shadow-glow: rgba(229, 91, 60, 0.25);
-  --shadow-glow-hover: rgba(229, 91, 60, 0.4);
-  --input-glow: rgba(229, 91, 60, 0.15);
+  --shadow-glow: rgba(var(--accent-rgb), 0.05);
+  --shadow-glow-hover: rgba(var(--accent-rgb), 0.12);
+  --input-glow: rgba(var(--accent-rgb), 0.05);
 
-  --danger-bg: rgba(207, 34, 46, 0.05);
-  --danger-border: rgba(207, 34, 46, 0.15);
+  --danger-bg: rgba(150, 40, 34, 0.05);
+  --danger-border: rgba(150, 40, 34, 0.15);
 }
 
 /* Global resets & scrollbars */
@@ -138,6 +146,25 @@ body {
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
   overflow-x: hidden;
+}
+
+/* Modern minimalist typography pairing using Outfit for titles and Inter for content */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.main-title,
+.form-title {
+  font-family: 'Outfit', var(--font-family);
+  font-weight: 700;
+}
+
+.prd-card-content,
+.prd-card-content p,
+.prd-card-content li {
+  font-family: 'Inter', var(--font-family);
 }
 
 /* Smooth transitions for theme-affected elements */
@@ -219,7 +246,7 @@ label {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Outfit', var(--font-family);
+  font-family: var(--font-family);
   font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
@@ -235,7 +262,7 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(255, 107, 74, 0.2);
+  box-shadow: 0 4px 10px var(--shadow-glow);
 }
 
 .app-subtitle {
@@ -248,18 +275,13 @@ label {
 .auth-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 420px;
   padding: 32px;
   position: relative;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.auth-card:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 /* CSS-Only Tab System setup */
@@ -420,9 +442,9 @@ label {
 .btn-primary,
 .btn-accent {
   background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
-  color: #1A1208 !important;
-  /* dark text for contrast */
-  border: 1px solid rgba(26, 20, 8, 0.1);
+  color: var(--btn-text) !important;
+  /* theme-aware text contrast */
+  border: 1px solid rgba(var(--accent-rgb), 0.1);
   box-shadow: 0 4px 20px var(--shadow-glow);
 }
 
@@ -467,32 +489,73 @@ label {
   flex-shrink: 0;
 }
 
-/* ── Floating Toggle (When sidebar is closed) ── */
-.floating-toggle-btn {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 100;
-  width: 40px;
-  height: 40px;
+/* ── Narrow Icon Bar (always visible) ── */
+.sidebar-icon-bar {
+  width: 52px;
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-md);
+  border-right: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sidebar-icon-bar-top,
+.sidebar-icon-bar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Individual icon buttons */
+.icon-bar-btn {
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: none;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.18s ease, color 0.18s ease;
+  outline: none;
+  position: relative;
 }
 
-.floating-toggle-btn:hover {
-  background-color: var(--bg-card);
+.icon-bar-btn:hover {
+  background-color: rgba(255, 107, 74, 0.1);
+  color: var(--text-primary);
+}
+
+/* Active state (e.g. history panel is open) */
+.icon-bar-btn.active {
+  background-color: rgba(255, 107, 74, 0.15);
   color: var(--accent-coral);
-  border-color: var(--accent-coral);
 }
 
+.icon-bar-btn.active::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 20px;
+  background: var(--accent-coral);
+  border-radius: 0 3px 3px 0;
+}
+
+/* Logout icon gets a subtle red tint on hover */
+.icon-bar-btn--logout:hover {
+  background-color: rgba(229, 72, 77, 0.1);
+  color: var(--error);
+}
 
 /* ── Slide-out History Panel ── */
 .sidebar-panel {
@@ -504,7 +567,7 @@ label {
   flex-direction: column;
   height: 100%;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 0.3s ease;
+    border-color 0.3s ease;
 }
 
 .sidebar-panel.open {
@@ -512,53 +575,10 @@ label {
   border-right-color: var(--border-color);
 }
 
-/* Panel Header Layout */
 .sidebar-panel-header {
   padding: 20px 16px 12px 16px;
   border-bottom: none;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-panel-top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
-.sidebar-toggle-btn {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: var(--border-radius-md);
-  background: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.sidebar-toggle-btn:hover {
-  background-color: var(--bg-card);
-  color: var(--text-primary);
-}
-
-.sidebar-logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 0.02em;
-}
-
-.new-prd-btn {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 14px;
-  margin-bottom: 24px;
 }
 
 .sidebar-panel-title {
@@ -578,7 +598,7 @@ label {
 
 .sidebar-panel-footer {
   padding: 12px 16px;
-  border-top: none;
+  border-top: 1px solid var(--border-color);
   flex-shrink: 0;
 }
 
@@ -656,18 +676,13 @@ label {
 .content-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.content-card:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 /* Form elements in dashboard */
@@ -778,35 +793,18 @@ textarea.dashboard-input {
 .prd-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid transparent;
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.prd-card:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
-
 .prd-card:hover {
   border-color: var(--border-focus);
   box-shadow: var(--shadow-md);
-}
-
-.prd-card:hover:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:hover:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
 }
 
 .prd-card-title {
@@ -827,7 +825,7 @@ textarea.dashboard-input {
 
 .prd-card-title-badge {
   background-color: var(--accent-bg-subtle);
-  border: 1px solid rgba(255, 107, 74, 0.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   color: var(--accent-coral);
   font-size: 11px;
   font-weight: 600;
