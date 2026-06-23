@@ -32,14 +32,14 @@ class GeneratedDocument(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     project_id: Mapped[int] = mapped_column(Integer, ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, unique=True)
 
-    # Each of the 8 sections gets its own column
-    summary = Column(Text, nullable=False)
-    features = Column(Text, nullable=False)
-    user_stories = Column(Text, nullable=False)
-    db_design = Column(Text, nullable=False)
-    apis = Column(Text, nullable=False)
-    test_cases = Column(Text, nullable=False)
-    dev_plan = Column(Text, nullable=False)
+    summary: Mapped[str]      = mapped_column(Text, nullable=False)
+    features: Mapped[str]     = mapped_column(Text, nullable=False)
+    user_stories: Mapped[str] = mapped_column(Text, nullable=False)
+    techstack: Mapped[str]    = mapped_column(Text, nullable=False)
+    db_design: Mapped[str]    = mapped_column(Text, nullable=False)
+    apis: Mapped[str]         = mapped_column(Text, nullable=False)
+    test_cases: Mapped[str]   = mapped_column(Text, nullable=False)
+    dev_plan: Mapped[str]     = mapped_column(Text, nullable=False)
 
     project: Mapped["Project"] = relationship("Project", back_populates="document")
 

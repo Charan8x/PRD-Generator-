@@ -397,6 +397,7 @@
     border-color: var(--border-focus);
     box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.2);
   }
+
   100% {
     background-color: var(--bg-card);
     border-color: var(--border-color);
@@ -414,7 +415,8 @@
 }
 
 .project-item-button {
-  padding-right: 40px !important; /* Make room for the menu button */
+  padding-right: 40px !important;
+  /* Make room for the menu button */
 }
 
 .project-item-menu-btn {
@@ -520,7 +522,8 @@
   font-size: 13px;
   outline: none;
   font-family: var(--font-family);
-  width: 0; /* allows input to shrink to flex width */
+  width: 0;
+  /* allows input to shrink to flex width */
 }
 
 .project-rename-input:focus {
@@ -611,8 +614,23 @@
 }
 
 @keyframes fade-in-out {
-  0% { opacity: 0; transform: translate(-50%, 10px); }
-  10% { opacity: 1; transform: translate(-50%, 0); }
-  90% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, -10px); }
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
 }

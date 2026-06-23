@@ -36,7 +36,7 @@ def build_prompt(project_name: str, description: str) -> str:
 Project Name: {project_name}
 Project Description: {description}
 
-Generate a complete, production-grade PRD strictly following this schema for ALL seven sections.
+Generate a complete, production-grade PRD strictly following this schema for ALL eight sections.
 
 ---
 
@@ -65,6 +65,12 @@ Acceptance Criteria:
   - [specific testable condition 1]
   - [specific testable condition 2]
 Write at least 6 user stories covering the core flows of the product.
+
+---
+
+TECH STACK
+List all the key technologies, libraries, and frameworks that will be used for this project.
+Be specific. E.g., Frontend (React, Vite, CSS variables), Backend (FastAPI, SQLAlchemy, Uvicorn, PostgreSQL), and details about hosting, version control, etc.
 
 ---
 
@@ -102,7 +108,7 @@ STRICT RULES:
 - Every section must have detailed, specific, measurable content.
 - Do not use markdown symbols like **, ##, or *. Use plain text only.
 - Do not skip any section.
-- Do not add extra sections beyond the seven listed.
+- Do not add extra sections beyond the eight listed.
 """
 
 

@@ -48,7 +48,7 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
     try {
       // Step 1: Create the project record
       const createdProject = await createProject(token, projectName, projectDescription);
-      
+
       // Step 2: Trigger AI generation for this project
       const generateResponse = await generateProject(token, createdProject.id);
 
@@ -67,9 +67,9 @@ const ProjectForm = ({ token, onGenerationSuccess }) => {
   return (
     <div className="project-form-container">
       <h2 className="form-title">Create a New PRD</h2>
-      
+
       {error && <ErrorMessage message={error} />}
-      
+
       <form onSubmit={handleSubmit} className="project-form">
         <div className="form-group">
           <label htmlFor="projectName" className="form-label">Project Name</label>
