@@ -7,7 +7,7 @@ const API_BASE_URL = 'http://localhost:8000';
 async function handleResponse(response) {
   const contentType = response.headers.get('content-type');
   let data = null;
-  
+
   if (contentType && contentType.includes('application/json')) {
     data = await response.json();
   }
@@ -15,7 +15,7 @@ async function handleResponse(response) {
   if (!response.ok) {
     // Check if the response contains FastAPI-style detail error
     if (data && data.detail) {
-      
+
       if (typeof data.detail === 'string') {
         throw new Error(data.detail);
       } else if (Array.isArray(data.detail)) {
@@ -214,10 +214,32 @@ export async function deleteProject(token, id) {
       'Authorization': `Bearer ${token}`,
     },
   });
-  
+
   if (response.status === 204) {
     return null;
   }
+
+  async function handleResponse(response) {
+    const contentType = response.headers.get('content-type');
+    let data = null;
+
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    }
+
+    if (response.status === 401) {
+      // Session expired; clear token and force reload/logout
+      localStorage.removeItem('prd_token');
+      window.location.reload();
+      throw new Error("Session expired. Please log in again.");
+    }
+
+    if (!response.ok) {
+      // ... general error handling
+    }
+    return data;
+  }
+
   return handleResponse(response);
 }
 
