@@ -4,11 +4,7 @@ import ErrorMessage from './ErrorMessage';
 
 /**
  * ProjectHistory Component
-<<<<<<< HEAD
- * Renders a narrow icon activity bar + slide-out history panel.
-=======
  * Renders the sliding history panel and the floating toggle button when closed.
->>>>>>> 597a3f4b5bfdeab9afb5dbd729f0287587c0ff46
  */
 const ProjectHistory = ({
   token,
@@ -118,65 +114,6 @@ const ProjectHistory = ({
   };
 
   return (
-<<<<<<< HEAD
-    <div className="sidebar-wrapper">
-      {/* ── Narrow Icon Activity Bar ── */}
-      <div className="sidebar-icon-bar">
-        <div className="sidebar-icon-bar-top">
-          {/* + New PRD icon — only when panel is closed */}
-          {!isPanelOpen && (
-            <button
-              type="button"
-              className="icon-bar-btn"
-              title="New PRD"
-              onClick={onNewPrd}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-            </button>
-          )}
-
-          {/* Toggle History Panel — always visible */}
-          <button
-            type="button"
-            className={`icon-bar-btn${isPanelOpen ? ' active' : ''}`}
-            title={isPanelOpen ? 'Close sidebar' : 'Open sidebar'}
-            onClick={() => setIsPanelOpen(p => !p)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="9" y1="3" x2="9" y2="21" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="sidebar-icon-bar-bottom">
-          {/* Logout icon — only when panel is closed */}
-          {!isPanelOpen && (
-            <button
-              type="button"
-              className="icon-bar-btn icon-bar-btn--logout"
-              title="Logout"
-              onClick={handleLogoutClick}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* ── Slide-out History Panel ── */}
-      <div className={`sidebar-panel${isPanelOpen ? ' open' : ''}`}>
-        {/* Panel header: logo & title + New PRD button */}
-=======
     <div className={`sidebar-wrapper ${isPanelOpen ? 'open' : 'closed'}`}>
       {/* Floating Toggle Button (Visible only when sidebar is closed, borderless/bg-less) */}
       {!isPanelOpen && (
@@ -196,7 +133,6 @@ const ProjectHistory = ({
 
       {/* Slide-out Sidebar Panel */}
       <div className={`sidebar-panel ${isPanelOpen ? 'open' : 'closed'}`}>
->>>>>>> 597a3f4b5bfdeab9afb5dbd729f0287587c0ff46
         <div className="sidebar-panel-header">
           {/* Header Row: Title on the Left, Toggle Button on the Right */}
           <div className="sidebar-panel-top-row">

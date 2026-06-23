@@ -553,22 +553,22 @@ label {
   z-index: 100;
   width: 40px;
   height: 40px;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-md);
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
+  outline: none;
 }
 
 .floating-toggle-btn:hover {
-  background-color: var(--bg-card);
-  color: var(--accent-coral);
-  border-color: var(--accent-coral);
+  background: none !important;
+  color: var(--text-primary);
+  transform: scale(1.05);
 }
 
 
