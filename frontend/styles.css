@@ -59,7 +59,6 @@ textarea[name="project_description"]::placeholder {
 }
 
 :root[data-theme="dark"] {
-<<<<<<< HEAD
   /* Minimalist Dark Sage/Espresso theme */
   --bg-main: #1E201E;
   /* dark charcoal sage background */
