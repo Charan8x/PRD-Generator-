@@ -18,6 +18,8 @@ const ProjectHistory = ({
   onLogout,
   onProjectRenamed = () => { },
   onProjectDeleted = () => { }
+  onProjectRenamed = () => { },
+  onProjectDeleted = () => { }
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [editingProjectId, setEditingProjectId] = useState(null);
