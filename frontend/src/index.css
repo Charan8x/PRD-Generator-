@@ -40,16 +40,16 @@
   padding: 11px 16px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(26, 20, 8, 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.1);
   outline: none;
   background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
-  color: #1A1208 !important;
-  box-shadow: 0 4px 20px rgba(255, 107, 74, 0.35);
+  color: var(--btn-text) !important;
+  box-shadow: 0 4px 20px var(--shadow-glow);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-coral) 100%);
-  box-shadow: 0 4px 20px rgba(255, 107, 74, 0.5);
+  box-shadow: 0 4px 20px var(--shadow-glow-hover);
 }
 
 .btn-primary:disabled {
@@ -177,18 +177,13 @@
 .project-form-container {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.project-form-container:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-title {
@@ -272,35 +267,18 @@
 .section-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid transparent;
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.section-card:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.section-card:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
-
 .section-card:hover {
   border-color: var(--border-focus);
   box-shadow: var(--shadow-md);
-}
-
-.section-card:hover:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.section-card:hover:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
 }
 
 .section-card-title {
@@ -316,11 +294,12 @@
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;
+  font-family: 'Inter', var(--font-family);
 }
 
 .section-card-text {
   white-space: pre-wrap;
-  font-family: var(--font-family);
+  font-family: 'Inter', var(--font-family);
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -437,7 +416,7 @@
 }
 
 .project-item-menu-btn:hover {
-  background-color: rgba(255, 107, 74, 0.15);
+  background-color: rgba(var(--accent-rgb), 0.15);
   color: var(--text-primary);
 }
 
@@ -474,7 +453,7 @@
 }
 
 .project-menu-item:hover {
-  background-color: rgba(255, 107, 74, 0.08);
+  background-color: rgba(var(--accent-rgb), 0.08);
 }
 
 .project-menu-item-icon {
@@ -566,7 +545,7 @@
 
 .btn-edit-details:hover {
   background-color: var(--accent-coral) !important;
-  color: #1A1208 !important; /* dark text for high contrast on orange */
+  color: var(--btn-text) !important; /* theme-aware text contrast */
 }
 
 /* Ensure the SVG icon inside Edit Details inherits the correct color changes */
@@ -582,7 +561,7 @@
 }
 
 .btn-cancel-edit:hover {
-  background-color: rgba(255, 107, 74, 0.1) !important;
+  background-color: rgba(var(--accent-rgb), 0.1) !important;
   color: var(--accent-coral) !important;
 }
 
@@ -593,7 +572,7 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--accent-coral);
-  color: #1A1208;
+  color: var(--btn-text);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 12px;

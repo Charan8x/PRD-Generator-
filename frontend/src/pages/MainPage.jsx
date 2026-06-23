@@ -288,26 +288,6 @@ const MainPage = ({ token, onLogout }) => {
           <>
             {/* Screen 3 - Generated Plan View */}
             <section className="results-section" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-              <div className="content-card" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-                  <div style={{ flex: 1 }}>
-                    <h1 className="main-title" style={{ fontSize: '24px', marginBottom: '0' }}>{currentProjectName}</h1>
-                  </div>
-                  {!isEditing && (
-                    <button
-                      type="button"
-                      className="btn-primary"
-                      style={{ width: 'auto', padding: '6px 12px', fontSize: '12px', marginLeft: '16px', flexShrink: 0 }}
-                      onClick={handleStartEdit}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style={{ marginRight: '6px' }}>
-                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-                      </svg>
-                      Edit PRD
-                    </button>
-                  )}
-                </div>
-              </div>
 
               {isEditing && (
                 <div className="project-form-container" style={{ position: 'relative' }}>
@@ -554,6 +534,8 @@ const MainPage = ({ token, onLogout }) => {
                 <ResultsDisplay
                   project={{ project_name: currentProjectName, document: selectedProjectSections }}
                   updatedSections={updatedSections}
+                  isEditing={isEditing}
+                  onStartEdit={handleStartEdit}
                 />
               )}
             </section>
