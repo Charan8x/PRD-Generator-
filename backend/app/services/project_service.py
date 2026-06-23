@@ -100,7 +100,7 @@ def edit_project_prd(
     Handles rename find-and-replace (Part A) and targeted AI edit (Part B),
     updating the Projects and GeneratedDocument tables, and appending logs to description.
     """
-    from datetime import datetime
+    from datetime import datetime, timezone
     from app.services import ai_service
 
     document = project.document
@@ -144,7 +144,7 @@ def edit_project_prd(
         document.dev_plan = sections["dev_plan"]
 
         # Append log entry to Projects.description
-        timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
         log_entry = (
             f"\n\n---EDIT [{timestamp}]---\n"
             f"Request: Renamed project from \"{old_project_name}\" to \"{new_name_clean}\"\n"
@@ -173,7 +173,7 @@ def edit_project_prd(
                 setattr(document, key, new_content)
 
         # Append log entry to Projects.description
-        timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
         updated_keys = ", ".join(changed_sections.keys())
         log_entry = (
             f"\n\n---EDIT [{timestamp}]---\n"

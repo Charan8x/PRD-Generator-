@@ -467,73 +467,32 @@ label {
   flex-shrink: 0;
 }
 
-/* ── Narrow Icon Bar (always visible) ── */
-.sidebar-icon-bar {
-  width: 52px;
+/* ── Floating Toggle (When sidebar is closed) ── */
+.floating-toggle-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
   background-color: var(--bg-secondary);
-  border-right: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-  flex-shrink: 0;
-  z-index: 10;
-}
-
-.sidebar-icon-bar-top,
-.sidebar-icon-bar-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-/* Individual icon buttons */
-.icon-bar-btn {
-  width: 36px;
-  height: 36px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: var(--border-radius-md);
-  background: none;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: background-color 0.18s ease, color 0.18s ease;
-  outline: none;
-  position: relative;
+  transition: all 0.2s ease;
 }
 
-.icon-bar-btn:hover {
-  background-color: rgba(255, 107, 74, 0.1);
-  color: var(--text-primary);
-}
-
-/* Active state (e.g. history panel is open) */
-.icon-bar-btn.active {
-  background-color: rgba(255, 107, 74, 0.15);
+.floating-toggle-btn:hover {
+  background-color: var(--bg-card);
   color: var(--accent-coral);
+  border-color: var(--accent-coral);
 }
 
-.icon-bar-btn.active::before {
-  content: '';
-  position: absolute;
-  left: -1px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 20px;
-  background: var(--accent-coral);
-  border-radius: 0 3px 3px 0;
-}
-
-/* Logout icon gets a subtle red tint on hover */
-.icon-bar-btn--logout:hover {
-  background-color: rgba(229, 72, 77, 0.1);
-  color: var(--error);
-}
 
 /* ── Slide-out History Panel ── */
 .sidebar-panel {
@@ -553,10 +512,53 @@ label {
   border-right-color: var(--border-color);
 }
 
+/* Panel Header Layout */
 .sidebar-panel-header {
   padding: 20px 16px 12px 16px;
   border-bottom: none;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-panel-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.sidebar-toggle-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.sidebar-logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.new-prd-btn {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin-bottom: 24px;
 }
 
 .sidebar-panel-title {
@@ -576,7 +578,7 @@ label {
 
 .sidebar-panel-footer {
   padding: 12px 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: none;
   flex-shrink: 0;
 }
 
