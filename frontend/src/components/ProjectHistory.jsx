@@ -4,7 +4,7 @@ import ErrorMessage from './ErrorMessage';
 
 /**
  * ProjectHistory Component
- * Redesigned as a narrow icon activity bar + slide-out history panel.
+ * Renders the sliding history panel and the floating toggle button when closed.
  */
 const ProjectHistory = ({
   token,
@@ -15,14 +15,14 @@ const ProjectHistory = ({
   onSelectProject,
   onNewPrd,
   onLogout,
-  onProjectRenamed = () => {},
-  onProjectDeleted = () => {}
+  onProjectRenamed = () => { },
+  onProjectDeleted = () => { }
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [editingProjectId, setEditingProjectId] = useState(null);
   const [renameValue, setRenameValue] = useState('');
   const [toastMessage, setToastMessage] = useState('');
-  const [isPanelOpen, setIsPanelOpen] = useState(true); // history slide-out panel
+  const [isPanelOpen, setIsPanelOpen] = useState(true); // Control sliding state
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -39,9 +39,13 @@ const ProjectHistory = ({
   }, [openMenuId]);
 
   const handleLogoutClick = async () => {
-    try { await logout(token); } catch (err) {
+    try {
+      await logout(token);
+    } catch (err) {
       console.error('Logout error, clearing local session anyway', err);
-    } finally { onLogout(); }
+    } finally {
+      onLogout();
+    }
   };
 
   const handleMenuToggle = (e, projectId) => {
@@ -63,7 +67,9 @@ const ProjectHistory = ({
       await renameProject(token, projectId, trimmed);
       setEditingProjectId(null);
       onProjectRenamed(projectId, trimmed);
-    } catch (err) { alert(err.message || 'Failed to rename project.'); }
+    } catch (err) {
+      alert(err.message || 'Failed to rename project.');
+    }
   };
 
   const handleRenameKeyDown = (e, projectId) => {
@@ -89,90 +95,71 @@ const ProjectHistory = ({
     try {
       await deleteProject(token, projectId);
       onProjectDeleted(projectId);
-    } catch (err) { alert(err.message || 'Failed to delete project.'); }
+    } catch (err) {
+      alert(err.message || 'Failed to delete project.');
+    }
   };
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
     try {
       return new Date(dateString).toLocaleDateString(undefined, {
-        year: 'numeric', month: 'short', day: 'numeric'
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       });
-    } catch { return dateString; }
+    } catch {
+      return dateString;
+    }
   };
 
   return (
-    // Wrapper holds both the icon bar and the slide-out panel
-    <div className="sidebar-wrapper">
+    <div className={`sidebar-wrapper ${isPanelOpen ? 'open' : 'closed'}`}>
+      {/* Floating Toggle Button (Visible only when sidebar is closed, borderless/bg-less) */}
+      {!isPanelOpen && (
+        <button
+          type="button"
+          className="floating-toggle-btn"
+          onClick={() => setIsPanelOpen(true)}
+          title="Open sidebar"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <line x1="9" y1="3" x2="9" y2="21" />
+          </svg>
+        </button>
+      )}
 
-      {/* ── Narrow Icon Activity Bar ── */}
-      <div className="sidebar-icon-bar">
-        <div className="sidebar-icon-bar-top">
-
-          {/* + New PRD icon — only when panel is closed */}
-          {!isPanelOpen && (
-            <button
-              type="button"
-              className="icon-bar-btn"
-              title="New PRD"
-              onClick={onNewPrd}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v14M5 12h14"/>
-              </svg>
-            </button>
-          )}
-
-          {/* Toggle History Panel — always visible */}
-          <button
-            type="button"
-            className={`icon-bar-btn${isPanelOpen ? ' active' : ''}`}
-            title={isPanelOpen ? 'Close sidebar' : 'Open sidebar'}
-            onClick={() => setIsPanelOpen(p => !p)}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-              <line x1="9" y1="3" x2="9" y2="21"/>
-            </svg>
-          </button>
-
-        </div>
-
-        <div className="sidebar-icon-bar-bottom">
-          {/* Logout icon — only when panel is closed */}
-          {!isPanelOpen && (
-            <button
-              type="button"
-              className="icon-bar-btn icon-bar-btn--logout"
-              title="Logout"
-              onClick={handleLogoutClick}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                <polyline points="16 17 21 12 16 7"/>
-                <line x1="21" y1="12" x2="9" y2="12"/>
-              </svg>
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* ── Slide-out History Panel ── */}
-      <div className={`sidebar-panel${isPanelOpen ? ' open' : ''}`}>
-
-        {/* Panel header: + New PRD button + title */}
+      {/* Slide-out Sidebar Panel */}
+      <div className={`sidebar-panel ${isPanelOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-panel-header">
+          {/* Header Row: Title on the Left, Toggle Button on the Right */}
+          <div className="sidebar-panel-top-row">
+            <span className="sidebar-logo-text">PRD Generator</span>
+            <button
+              type="button"
+              className="sidebar-toggle-btn"
+              onClick={() => setIsPanelOpen(false)}
+              title="Close sidebar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="9" y1="3" x2="9" y2="21" />
+              </svg>
+            </button>
+          </div>
+
+          {/* New PRD button */}
           <button
             type="button"
-            className="btn-primary"
-            style={{ width: '100%', padding: '9px 12px', fontSize: '13px', marginBottom: '14px' }}
+            className="btn-primary new-prd-btn"
             onClick={onNewPrd}
           >
             + New PRD
           </button>
+
           <span className="sidebar-panel-title">PRD History</span>
         </div>
 
@@ -269,7 +256,6 @@ const ProjectHistory = ({
 
         {toastMessage && <div className="sidebar-toast">{toastMessage}</div>}
       </div>
-
     </div>
   );
 };
