@@ -38,10 +38,8 @@ textarea[name="project_description"]::placeholder {
   --bg-secondary: var(--bg-sidebar);
   --bg-input: var(--bg-main);
 
-  --border-color: rgba(255, 107, 74, 0.15);
-  /* low-opacity accent-coral hairline border */
-  --border-color: rgba(255, 107, 74, 0.15);
-  /* low-opacity accent-coral hairline border */
+  --border-color: rgba(var(--accent-rgb), 0.15);
+  /* low-opacity accent hairline border */
   --border-focus: var(--accent-coral);
 
   --text-muted: var(--text-secondary);
@@ -49,10 +47,7 @@ textarea[name="project_description"]::placeholder {
   /* Sunset Tech Accents */
   --accent-color: var(--accent-coral);
   --accent-hover: var(--accent-gold);
-  --accent-bg-subtle: rgba(255, 107, 74, 0.08);
-  --accent-rgb: 255, 107, 74;
-  --accent-bg-subtle: rgba(255, 107, 74, 0.08);
-  --accent-rgb: 255, 107, 74;
+  --accent-bg-subtle: rgba(var(--accent-rgb), 0.08);
 
   /* Status Colors */
   --danger-color: var(--error);
@@ -64,116 +59,80 @@ textarea[name="project_description"]::placeholder {
 }
 
 :root[data-theme="dark"] {
-  /* Sunset Tech Dark colors */
-  --bg-main: #0D1117;
-  /* main page background, deep blue-black */
-  --bg-sidebar: #161B22;
-  /* sidebar background, slightly lighter blue-grey */
-  --bg-card: #1F2530;
-  /* cards, form containers, generated output sections */
-  --accent-coral: #FF6B4A;
-  /* primary accent — headings, borders, active states */
-  --accent-gold: #FFC857;
-  /* secondary accent — alternating highlights, hover states */
-  --text-primary: #F0F2F5;
-  /* main body text, off-white */
-  --text-secondary: #8B949E;
-  /* muted slate labels */
-  --error: #E5484D;
-  /* error messages, invalid states */
-  /* Sunset Tech Dark colors */
-  --bg-main: #0D1117;
-  /* main page background, deep blue-black */
-  --bg-sidebar: #161B22;
-  /* sidebar background, slightly lighter blue-grey */
-  --bg-card: #1F2530;
-  /* cards, form containers, generated output sections */
-  --accent-coral: #FF6B4A;
-  /* primary accent — headings, borders, active states */
-  --accent-gold: #FFC857;
-  /* secondary accent — alternating highlights, hover states */
-  --text-primary: #F0F2F5;
-  /* main body text, off-white */
-  --text-secondary: #8B949E;
-  /* muted slate labels */
-  --error: #E5484D;
-  /* error messages, invalid states */
+<<<<<<< HEAD
+  /* Minimalist Dark Sage/Espresso theme */
+  --bg-main: #1E201E;
+  /* dark charcoal sage background */
+  --bg-sidebar: #2B2D2A;
+  /* dark sage sidebar */
+  --bg-card: #2B2D2A;
+  /* dark sage cards */
+  --bg-input: #1A1B19;
+  /* dark input background */
+  --accent-coral: #AFB2A9;
+  /* primary accent - Ashwood (soft sage-gray) */
+  --accent-gold: #B6B9B2;
+  /* secondary accent - Dusk (medium-light sage-gray) */
+  --accent-rgb: 175, 178, 169;
+  /* Ashwood RGB */
+  --text-primary: #E1E3DF;
+  /* main body text - soft warm white-gray */
+  --text-secondary: #B6B9B2;
+  /* muted dusk labels */
+  --btn-text: #1E201E;
+  /* dark text on light buttons */
+  --error: #F16A60;
+  /* soft warm red */
 
   /* Shadows - softened for dark background */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.7), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
 
-  --shadow-glow: rgba(255, 107, 74, 0.35);
-  --shadow-glow-hover: rgba(255, 107, 74, 0.5);
-  --input-glow: rgba(255, 107, 74, 0.2);
-  --shadow-glow: rgba(255, 107, 74, 0.35);
-  --shadow-glow-hover: rgba(255, 107, 74, 0.5);
-  --input-glow: rgba(255, 107, 74, 0.2);
+  --shadow-glow: rgba(var(--accent-rgb), 0.05);
+  --shadow-glow-hover: rgba(var(--accent-rgb), 0.12);
+  --input-glow: rgba(var(--accent-rgb), 0.05);
 
-  --danger-bg: rgba(229, 72, 77, 0.05);
-  --danger-border: rgba(229, 72, 77, 0.15);
-  --danger-bg: rgba(229, 72, 77, 0.05);
-  --danger-border: rgba(229, 72, 77, 0.15);
+  --danger-bg: rgba(241, 106, 96, 0.05);
+  --danger-border: rgba(241, 106, 96, 0.15);
 }
 
 :root[data-theme="light"] {
-  /* Sunset Tech Light colors */
-  --bg-main: #F6F8FA;
-  /* main page background, very soft off-white/light blue-grey */
-  --bg-sidebar: #FFFFFF;
-  /* sidebar background, pure white */
-  /* Sunset Tech Light colors */
-  --bg-main: #F6F8FA;
-  /* main page background, very soft off-white/light blue-grey */
-  --bg-sidebar: #FFFFFF;
-  /* sidebar background, pure white */
+  /* Minimalist Warm Ashwood Sage theme based on color palette */
+  --bg-main: #EAEBE7;
+  /* main page background - soft ashwood-tinted off-white/beige */
+  --bg-sidebar: #F5F6F4;
+  /* sidebar background - clean, very light sage */
   --bg-card: #FFFFFF;
-  /* cards, form containers, generated output sections */
-  --accent-coral: #E55B3C;
-  /* primary accent - slightly darker coral for light bg contrast */
-  --accent-gold: #D97706;
-  /* secondary accent - darker gold/amber for readability */
-  --text-primary: #1A1D20;
-  /* main body text, dark charcoal */
-  --text-secondary: #57606A;
-  /* muted slate grey labels */
-  --error: #CF222E;
-  /* light-red error */
-  /* cards, form containers, generated output sections */
-  --accent-coral: #E55B3C;
-  /* primary accent - slightly darker coral for light bg contrast */
-  --accent-gold: #D97706;
-  /* secondary accent - darker gold/amber for readability */
-  --text-primary: #1A1D20;
-  /* main body text, dark charcoal */
-  --text-secondary: #57606A;
-  /* muted slate grey labels */
-  --error: #CF222E;
-  /* light-red error */
+  /* cards, form containers, generated output sections - pure white */
+  --bg-input: #FFFFFF;
+  /* input background */
+  --accent-coral: #7B7F77;
+  /* primary accent - Pebble (dark sage-gray) */
+  --accent-gold: #8A8E85;
+  /* secondary accent - Clay (medium-dark sage-gray) */
+  --accent-rgb: 123, 127, 119;
+  /* Pebble RGB */
+  --text-primary: #3A3D38;
+  /* main body text - dark charcoal sage */
+  --text-secondary: #7B7F77;
+  /* muted pebble labels */
+  --btn-text: #FFFFFF;
+  /* white text on dark buttons */
+  --error: #962822;
+  /* brick red */
 
   /* Shadows - standard light background shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 2px 0 rgba(123, 127, 119, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(123, 127, 119, 0.05), 0 2px 4px -1px rgba(123, 127, 119, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(123, 127, 119, 0.04), 0 4px 6px -2px rgba(123, 127, 119, 0.02);
 
-  --shadow-glow: rgba(229, 91, 60, 0.25);
-  --shadow-glow-hover: rgba(229, 91, 60, 0.4);
-  --input-glow: rgba(229, 91, 60, 0.15);
-  --shadow-glow: rgba(229, 91, 60, 0.25);
-  --shadow-glow-hover: rgba(229, 91, 60, 0.4);
-  --input-glow: rgba(229, 91, 60, 0.15);
+  --shadow-glow: rgba(var(--accent-rgb), 0.05);
+  --shadow-glow-hover: rgba(var(--accent-rgb), 0.12);
+  --input-glow: rgba(var(--accent-rgb), 0.05);
 
-  --danger-bg: rgba(207, 34, 46, 0.05);
-  --danger-border: rgba(207, 34, 46, 0.15);
-  --danger-bg: rgba(207, 34, 46, 0.05);
-  --danger-border: rgba(207, 34, 46, 0.15);
+  --danger-bg: rgba(150, 40, 34, 0.05);
+  --danger-border: rgba(150, 40, 34, 0.15);
 }
 
 /* Global resets & scrollbars */
@@ -193,7 +152,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Page headings and generated PRD contents font */
+/* Modern minimalist typography pairing using Outfit for titles and Inter for content */
 h1,
 h2,
 h3,
@@ -201,11 +160,15 @@ h4,
 h5,
 h6,
 .main-title,
-.form-title,
+.form-title {
+  font-family: 'Outfit', var(--font-family);
+  font-weight: 700;
+}
+
 .prd-card-content,
 .prd-card-content p,
 .prd-card-content li {
-  font-family: 'Tiempo', serif;
+  font-family: 'Inter', var(--font-family);
 }
 
 /* Smooth transitions for theme-affected elements */
@@ -303,8 +266,7 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(255, 107, 74, 0.2);
-  box-shadow: 0 4px 10px rgba(255, 107, 74, 0.2);
+  box-shadow: 0 4px 10px var(--shadow-glow);
 }
 
 .app-subtitle {
@@ -317,24 +279,13 @@ label {
 .auth-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 420px;
   padding: 32px;
   position: relative;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.auth-card:hover {
-  border-left-color: var(--accent-gold);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.auth-card:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 /* CSS-Only Tab System setup */
@@ -495,12 +446,9 @@ label {
 .btn-primary,
 .btn-accent {
   background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-gold) 100%);
-  color: #1A1208 !important;
-  /* dark text for contrast */
-  border: 1px solid rgba(26, 20, 8, 0.1);
-  color: #1A1208 !important;
-  /* dark text for contrast */
-  border: 1px solid rgba(26, 20, 8, 0.1);
+  color: var(--btn-text) !important;
+  /* theme-aware text contrast */
+  border: 1px solid rgba(var(--accent-rgb), 0.1);
   box-shadow: 0 4px 20px var(--shadow-glow);
 }
 
@@ -734,24 +682,13 @@ label {
 .content-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid var(--accent-coral);
-  border-left: 3px solid var(--accent-coral);
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.content-card:hover {
-  border-left-color: var(--accent-gold);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-}
-
-.content-card:hover {
-  border-left-color: var(--accent-gold);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 /* Form elements in dashboard */
@@ -856,60 +793,27 @@ textarea.dashboard-input {
   letter-spacing: 0.05em;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
-  font-family: 'Tiempo', serif;
+  font-family: 'Outfit', var(--font-family);
 }
 
 .prd-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-left: 3px solid transparent;
-  border-left: 3px solid transparent;
   border-radius: var(--border-radius-lg);
   padding: 24px;
   box-shadow: var(--shadow-sm);
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
-  transition: border-left-color 0.3s ease, border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.prd-card:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
-
-.prd-card:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
 
 .prd-card:hover {
   border-color: var(--border-focus);
   box-shadow: var(--shadow-md);
 }
 
-.prd-card:hover:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:hover:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
-
-.prd-card:hover:nth-of-type(odd) {
-  border-left-color: var(--accent-coral);
-}
-
-.prd-card:hover:nth-of-type(even) {
-  border-left-color: var(--accent-gold);
-}
 
 .prd-card-title {
   display: flex;
@@ -923,14 +827,13 @@ textarea.dashboard-input {
   color: var(--accent-coral);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Tiempo', serif;
+  font-family: 'Outfit', var(--font-family);
   margin: 0;
 }
 
 .prd-card-title-badge {
   background-color: var(--accent-bg-subtle);
-  border: 1px solid rgba(255, 107, 74, 0.3);
-  border: 1px solid rgba(255, 107, 74, 0.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   color: var(--accent-coral);
   font-size: 11px;
   font-weight: 600;
