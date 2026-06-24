@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import projects, auth
+from app.routers import projects, auth, transcribe
 from app.db.init_db import init_db
 
 app = FastAPI(
@@ -24,6 +24,7 @@ init_db()
 # Register routers
 app.include_router(auth.router)
 app.include_router(projects.router)
+app.include_router(transcribe.router)
 
 
 @app.get("/", tags=["Health"])
