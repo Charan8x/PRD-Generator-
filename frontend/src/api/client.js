@@ -8,6 +8,7 @@ async function handleResponse(response) {
   const contentType = response.headers.get('content-type');
   let data = null;
 
+
   if (contentType && contentType.includes('application/json')) {
     data = await response.json();
   }
@@ -15,6 +16,7 @@ async function handleResponse(response) {
   if (!response.ok) {
     // Check if the response contains FastAPI-style detail error
     if (data && data.detail) {
+
 
       if (typeof data.detail === 'string') {
         throw new Error(data.detail);
@@ -214,6 +216,7 @@ export async function deleteProject(token, id) {
       'Authorization': `Bearer ${token}`,
     },
   });
+
 
   if (response.status === 204) {
     return null;
