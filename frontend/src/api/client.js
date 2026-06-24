@@ -243,3 +243,22 @@ export async function deleteProject(token, id) {
   return handleResponse(response);
 }
 
+/**
+ * Sends an audio blob to the backend transcribe endpoint.
+ * Returns: { text: string }
+ */
+export async function transcribeAudio(token, audioBlob) {
+  const formData = new FormData();
+  formData.append('file', audioBlob, 'audio.webm');
+
+  const response = await fetch(`${API_BASE_URL}/transcribe`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    body: formData,
+  });
+  return handleResponse(response);
+}
+
+
