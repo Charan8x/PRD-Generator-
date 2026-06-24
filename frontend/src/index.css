@@ -588,3 +588,186 @@
   90% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -10px); }
 }
+
+/* --- VOICE TRANSCRIPTION & MIC BUTTON --- */
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.textarea-wrapper textarea {
+  width: 100%;
+}
+
+.mic-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--text-secondary, #a1a1aa);
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.mic-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.mic-button.recording {
+  color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.1);
+  animation: pulse-ring 1.5s infinite;
+}
+
+.mic-button.processing {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.mic-button.disabled,
+.mic-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Pulsing Red Ring Animation */
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+/* Status Pill Badges */
+.transcription-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.transcription-pill.listening {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.transcription-pill.polishing {
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.red-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  display: inline-block;
+  animation: pulse-dot 1.5s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* Spinner Icon and Animation */
+.spinner-icon-mini {
+  animation: spin 1s linear infinite;
+}
+
+.spinner-mini {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(245, 158, 11, 0.2);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error messages and toasts */
+.transcription-error-message {
+  color: var(--danger-color, #ef4444);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.success-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #10b981;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  animation: toast-fade-in 0.2s ease-out;
+}
+
+@keyframes toast-fade-in {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Unsupported Browser Tooltip */
+.unsupported-tooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 10px;
+  margin-bottom: 8px;
+  background-color: var(--bg-card, #18181b);
+  border: 1px solid var(--border-color, #27272a);
+  color: var(--text-primary, #f4f4f5);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+  z-index: 100;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: tooltip-fade-in 0.2s ease-out;
+}
+
+@keyframes tooltip-fade-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
